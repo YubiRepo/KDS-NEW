@@ -3,12 +3,12 @@
       <div class="container p-2 border item-card">
         <div class="d-flex justify-content-between py-3 rounded border px-2">
           <div class="d-flex flex-column justify-content-start">
-            <span class="font-weight-bold">{{ item.itemName }}</span>
-            <span>{{ item.itemName }}</span>
+            <h5 class="font-weight-bold m-0">{{ item.itemName }}</h5>
+            <span>{{ item.type ?? "dine in" }}</span>
           </div>
-          <button type="button" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-primary btn-sm" style="height: 40px;">Submit</button>
         </div>
-        <div class="p-2">
+        <div class="">
           <table class="table table-bordered">
             <thead>
               <tr align="center">
