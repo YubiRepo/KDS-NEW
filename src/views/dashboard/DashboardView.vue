@@ -2,13 +2,16 @@
   <div class="container-fluid py-2">
     <div class="row">
       <div class="col d-flex align-items-center justify-content-center">
-        <div
-          class="btn-group"
-          role="group"
-          aria-label="Basic mixed styles example">
-          <button type="button" class="btn btn-danger">Left</button>
-          <button type="button" class="btn btn-warning">Middle</button>
-          <button type="button" class="btn btn-success">Right</button>
+        <div class="btn-group gap-2">
+          <v-btn
+            prepend-icon="mdi-refresh"
+            height="40"
+            min-width="164"
+            class="bg-primary">
+            Refresh
+          </v-btn>
+          <!-- btn with text grid view and icon grid -->
+          <v-btn height="40" prepend-icon="mdi-grid"> Grid View </v-btn>
         </div>
       </div>
       <div class="col d-flex align-items-center justify-content-center">
@@ -66,7 +69,8 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-start">
       <button class="btn btn-secondary" style="width: 100px">Back</button>
-      <div class="border p-2 d-flex flex-column justify-content-center align-items-center">
+      <div
+        class="border p-2 d-flex flex-column justify-content-center align-items-center">
         <h4 class="mb-2">Item Name</h4>
         <div class="d-flex gap-2">
           <div
@@ -96,11 +100,12 @@
       <table class="table table-bordered">
         <thead>
           <tr align="center">
-            <th class="text-white
-            " style="background-color:#1c5192;">table</th>
-            <th class="text-white" style="background-color:#1c5192;">order</th>
-            <th class="text-white" style="background-color:#1c5192;">out</th>
-            <th class="text-white" style="background-color:#1c5192;">on process</th>
+            <th class="text-white" style="background-color: #1c5192">table</th>
+            <th class="text-white" style="background-color: #1c5192">order</th>
+            <th class="text-white" style="background-color: #1c5192">out</th>
+            <th class="text-white" style="background-color: #1c5192">
+              on process
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -253,6 +258,7 @@ function handleFilterChange(selectedValue) {
 .item-container {
   flex: 1 1 calc(33.333% - 1rem);
   max-width: calc(33.333% - 1rem);
+  max-height: 300px;
 }
 
 @media (max-width: 768px) {
