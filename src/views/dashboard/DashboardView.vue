@@ -56,12 +56,12 @@
         <ItemCard :item="item" />
       </div>
     </div>
-    <div class="row">
+    <div class="d-flex flex-wrap justify-content-between gap-3">
       <div
-        class="col-md-3 mb-2 col-lg- col-12"
+        class="item-container"
         v-for="(item, index) in filteredItems"
         :key="index">
-        <div class="container p-2 border item-card w-100 h-100">
+        <div class="container p-2 border item-card ">
           <div
             class="d-flex justify-content-between py-3 rounded border px-2">
             <div class="d-flex flex-column justify-content-start">
@@ -71,18 +71,17 @@
             <button type="button" class="btn btn-primary">Submit</button>
           </div>
           <div class="p-2">
-            <!-- make table -->
             <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>table</th>
-                  <th>Order</th>
-                  <th>Done</th>
-                  <th>Not Done</th>
+              <thead style="background: red;">
+                <tr align="center">
+                  <th style="background-color:#1c5192;" class="text-white">table</th>
+                  <th style="background-color:#1c5192;" class="text-white">order</th>
+                  <th style="background-color:#1c5192;" class="text-white">out</th>
+                  <th style="background-color:#1c5192;" class="text-white">on process</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr align="center">
                   <td>{{ item.orderCount }}</td>
                   <td>{{ item.orderCount }}</td>
                   <td>{{ item.doneCount }}</td>
@@ -221,14 +220,24 @@ function handleFilterChange(selectedValue) {
 }
 </script>
 
-<style scoped>
-.item-card {
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  <style scoped>
+  .item-card {
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .col.item-card {
+    padding: 2px;
+    width: 100%;
+  }
+  .item-container {
+  flex: 1 1 calc(33.333% - 1rem);
+  max-width: calc(33.333% - 1rem);
 }
-.col.item-card {
-  padding: 2px;
-  width: 100%;
+
+@media (max-width: 768px) {
+  .item-container {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
 }
 </style>

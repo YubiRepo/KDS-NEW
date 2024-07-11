@@ -8,7 +8,7 @@
     <div class="p-2">
       <FormRow label="Order" :value="item.order ??0" />
       <FormRow label="Out" :value="item.out ??0" />
-      <FormRow label="On Process" :value="item.process ??0" />
+      <FormRow label="On Process" :value="item.process ??0  " />
     </div>
   </div>
 </template>
@@ -28,7 +28,6 @@ const props = defineProps({
 <style scoped>
 .item-card {
   width: 100%;
-  max-width: 300px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .item-card:hover {
