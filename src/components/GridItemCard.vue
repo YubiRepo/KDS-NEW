@@ -3,28 +3,28 @@
       <div
         class="d-flex flex-column justify-content-center py-3 rounded"
         style="background-color: #1c5192">
-        <span class="text-center text-white" style="font-weight: bold">{{ item.itemName }}</span>
+        <span class="text-center text-white" style="font-weight: bold">{{ item.name }}</span>
       </div>
       <div class="row py-1 px-3">
         <div class="col item-card">
           <div
             class="bg-primary p-2 text-white d-flex flex-column justify-content-center align-items-center h-100">
             <span>Order</span>
-            <h2>{{ item.orderCount }}</h2>
+            <h2>{{ item.orderCount ??0 }}</h2>
           </div>
         </div>
         <div class="col item-card">
           <div
             class="bg-success p-2 text-white d-flex flex-column justify-content-center align-items-center h-100">
             <span>Done</span>
-            <h2>{{ item.doneCount }}</h2>
+            <h2>{{ item.doneCount ??0 }}</h2>
           </div>
         </div>
         <div class="col item-card">
           <div
             class="bg-warning p-2 text-white d-flex flex-column justify-content-center align-items-center h-100">
             <span>Not Done</span>
-            <h2>{{ item.notDoneCount }}</h2>
+            <h2>{{ item.notDoneCount ??0}}</h2>
           </div>
         </div>
       </div>

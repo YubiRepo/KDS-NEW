@@ -3,7 +3,7 @@
     <div
         class="d-flex flex-column justify-content-center py-3 rounded"
         style="background-color: #1c5192">
-        <span class="text-center text-white" style="font-weight: bold">{{ item.itemName }}</span>
+        <span class="text-center text-white" style="font-weight: bold">{{ item.name }}</span>
       </div>
     <div class="p-2">
       <FormRow label="Order" :value="item.order ??0" />

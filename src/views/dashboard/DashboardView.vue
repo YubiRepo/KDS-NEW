@@ -143,78 +143,7 @@ onMounted(() => {
   fetchItems();
 });
 
-const items = ref([
-  {
-    itemName: "Bibimbap",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "all",
-  },
-  {
-    itemName: "Kimchi",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "dinein",
-  },
-  {
-    itemName: "Bulgogi",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "takeaway",
-  },
-  {
-    itemName: "Japchae",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "dinein",
-  },
-  {
-    itemName: "Tteokbokki",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "takeaway",
-  },
-  {
-    itemName: "Samgyeopsal",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "all",
-  },
-  {
-    itemName: "Galbi",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "dinein",
-  },
-  {
-    itemName: "Dolsot Bibimbap",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "takeaway",
-  },
-  {
-    itemName: "Kimchi Jjigae",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "all",
-  },
-  {
-    itemName: "Haemul Pajeon",
-    orderCount: 1,
-    doneCount: 2,
-    notDoneCount: 3,
-    type: "dinein",
-  },
-]);
+const items = ref([]);
 
 const selectedFilter = ref("all");
 
@@ -249,6 +178,7 @@ function handleFilterChange(selectedValue) {
 function fetchItems() {
   
   itemStore.fetchItems();
+  items.value = itemStore.getItems
 }
 </script>
 

@@ -24,8 +24,10 @@ const useItemStore = defineStore({
       this.loading = true;
       try {
         console.log("fetching items");
-        const items = await ApiService.get("/master/item");
-        this.items = items;
+        const res = await ApiService.get("/master/item" , { params: { page: 1, limit: 10 } });
+        this.items = res.item.data;
+        console.log("res", res.item.data);
+        console.log("items", items);
         this.loading = false;
         this.error = null; // Reset error state on success
       } catch (error) {

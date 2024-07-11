@@ -3,7 +3,7 @@
     <div class="container p-2 border item-card">
       <div class="d-flex justify-content-between py-3 rounded border px-2">
         <div class="d-flex flex-column justify-content-start">
-          <h5 class="font-weight-bold m-0">{{ item.itemName }}</h5>
+          <h5 class="font-weight-bold m-0">{{ item.name }}</h5>
           <span>{{ item.type ?? "dine in" }}</span>
         </div>
         <button

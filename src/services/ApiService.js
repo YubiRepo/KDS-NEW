@@ -9,9 +9,10 @@ const apiClient = axios.create({
 });
 
 const ApiService = {
-  get(endpoint) {
+  get(endpoint , { params }) {
     return new Promise((resolve, reject) => {
-      apiClient.get(endpoint)
+        let queryString = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
+      apiClient.get(`${endpoint}?${queryString}`)
         .then(response => resolve(response.data))
         .catch(error => reject(handleError(error)));
     });
