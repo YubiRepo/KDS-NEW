@@ -126,9 +126,10 @@ import FilterTypeGroup from "@/components/FilterTypeGroup.vue";
 import GridItemCard from "@/components/GridItemCard.vue";
 import ItemCard from "@/components/ItemCard.vue";
 import ItemCarTable from "@/components/ItemCardTable.vue";
+import useItemStore from "@/store/item-store";
 import moment from "moment";
 import { computed, onMounted, ref } from "vue";
-
+const itemStore = useItemStore();
 const date = ref(moment().format("dddd, DD MMMM YYYY , hh:mm:ss"));
 
 function countingDate() {
@@ -139,6 +140,7 @@ function countingDate() {
 
 onMounted(() => {
   countingDate();
+  fetchItems();
 });
 
 const items = ref([
@@ -243,6 +245,10 @@ const computedFilters = computed(() => {
 function handleFilterChange(selectedValue) {
   selectedFilter.value = selectedValue;
   console.log(selectedFilter.value);
+}
+function fetchItems() {
+  
+  itemStore.fetchItems();
 }
 </script>
 
