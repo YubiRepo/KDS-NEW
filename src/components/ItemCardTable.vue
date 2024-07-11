@@ -1,10 +1,10 @@
 <template>
-  <div class="item-container">
-    <div class="container p-2 border item-card">
+  <div class="item-container" @click="gotoDetail">
+    <div class="container p-2 border item-card ">
       <div class="d-flex justify-content-between py-3 rounded border px-2">
         <div class="d-flex flex-column justify-content-start">
           <h5 class="font-weight-bold m-0">{{ item.name }}</h5>
-          <span>{{ item.type ?? "dine in" }}</span>
+          <span>{{ item.type ?? "dine in" }};</span>
         </div>
         <button
           type="button"
@@ -49,6 +49,14 @@
 
 <script setup>
 import { defineProps, ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const gotoDetail = () => {
+  router.push({ name: "ItemDetail", params: { id: props.item.id } });
+};
+
+
 const itemDetail = ref([
   {
     itemName: "Nasi Goreng",
@@ -121,6 +129,7 @@ const props = defineProps({
     required: true,
   },
 });
+
 </script>
 
 <style scoped>
@@ -128,7 +137,11 @@ const props = defineProps({
   width: 100%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+.item-card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer
 
+}
 .item-container {
   flex: 1 1 calc(33.333% - 1rem);
   max-width: calc(33.333% - 1rem);

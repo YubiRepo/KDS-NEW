@@ -14,10 +14,21 @@ const routes = [
         meta: { requiresAuth: true },
       },
       {
-        path: 'kitchen display',
+        path: 'kitchen-display',
         name: 'Kitchen Display',
         component: () => import('@/views/dashboard/KitchenDisplayView.vue'),
         meta: { requiresAuth: true  },
+        children: [
+     
+        ],
+      } , 
+      {
+        path: 'item-detail/:id',
+        name: 'ItemDetail',
+        component: () => import('@/views/dashboard/ItemDetailView.vue'),
+        meta: { requiresAuth: true  },
+        props: true,
+        
       }
     ],
   },

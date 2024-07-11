@@ -10,8 +10,27 @@
             class="bg-primary">
             Refresh
           </v-btn>
-          <!-- btn with text grid view and icon grid -->
-          <v-btn height="40" prepend-icon="mdi-grid"> Grid View </v-btn>
+          <v-btn-toggle
+          v-model="viewMode"
+          color="primary"
+        
+          rounded="0"
+          group
+        >
+          <v-btn value="1"  height="40">
+            View 1
+          </v-btn>
+
+          <v-btn value="2" height="40">
+            View 2
+          </v-btn>
+
+          <v-btn value="3" height="40">
+            View 3
+          </v-btn>
+
+      
+        </v-btn-toggle>
         </div>
       </div>
       <div class="col d-flex align-items-center justify-content-center">
@@ -35,6 +54,7 @@
     </div>
   </div>
   <div class="container">
+   <div v-if="viewMode ==1">
     <div class="row my-3">
       <div class="row">
         <FilterTypeGroup
@@ -46,79 +66,30 @@
     <div class="row">
       <div
         class="col-md-3 mb-2 col-lg-3 col-12"
-        v-for="(item, index) in filteredItems"
+        v-for="(item, index) in itemStore.getItems"
         :key="index">
         <GridItemCard :item="item" />
       </div>
     </div>
-    <div class="row">
+   </div>
+    <div class="row" v-if="viewMode ==2">
       <div
         class="col-md-3 mb-2 col-lg-3 col-12"
-        v-for="(item, index) in filteredItems"
+        v-for="(item, index) in itemStore.getItems"
         :key="index">
         <ItemCard :item="item" />
       </div>
     </div>
-    <div class="d-flex flex-wrap justify-content-between gap-3">
+    <div class="my-2">
+      <div class="d-flex flex-wrap justify-content-between gap-3" v-if="viewMode ==3">
       <ItemCarTable
-        v-for="(item, index) in filteredItems"
+        v-for="(item, index) in itemStore.getItems"
         :key="index"
         :item="item" />
     </div>
-  </div>
-  <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-start">
-      <button class="btn btn-secondary" style="width: 100px">Back</button>
-      <div
-        class="border p-2 d-flex flex-column justify-content-center align-items-center">
-        <h4 class="mb-2">Item Name</h4>
-        <div class="d-flex gap-2">
-          <div
-            class="bg-primary p-2 text-white d-flex flex-column justify-content-center align-items-center"
-            style="width: 100px">
-            <span>Order</span>
-            <h2>{{ 1 }}</h2>
-          </div>
-          <div
-            class="bg-success p-2 text-white d-flex flex-column justify-content-center align-items-center"
-            style="width: 100px">
-            <span>Order</span>
-            <h2>{{ 1 }}</h2>
-          </div>
-          <div
-            class="bg-warning p-2 text-white d-flex flex-column justify-content-center align-items-center"
-            style="width: 100px">
-            <span>Order</span>
-            <h2>{{ 1 }}</h2>
-          </div>
-        </div>
-      </div>
-      <button class="btn btn-primary" style="width: 100px">submit</button>
-    </div>
-    <div class="my-4">
-      <!-- table with heading table, order, out, on process -->
-      <table class="table table-bordered">
-        <thead>
-          <tr align="center">
-            <th class="text-white" style="background-color: #1c5192">table</th>
-            <th class="text-white" style="background-color: #1c5192">order</th>
-            <th class="text-white" style="background-color: #1c5192">out</th>
-            <th class="text-white" style="background-color: #1c5192">
-              on process
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr align="center">
-            <td>{{ 1 }}</td>
-            <td>{{ 1 }}</td>
-            <td>{{ 1 }}</td>
-            <td>{{ 1 }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
+ 
 </template>
 
 <script setup>
@@ -130,8 +101,8 @@ import useItemStore from "@/store/item-store";
 import moment from "moment";
 import { computed, onMounted, ref } from "vue";
 const itemStore = useItemStore();
-const date = ref(moment().format("dddd, DD MMMM YYYY , hh:mm:ss"));
-
+const date = ref(moment().format("dddd, DD MMMM YYYY , hh:mm:ss")); 
+let viewMode = ref(1);
 function countingDate() {
   setInterval(() => {
     date.value = moment().format("dddd, DD MMMM YYYY , hh:mm:ss");
@@ -143,7 +114,7 @@ onMounted(() => {
   fetchItems();
 });
 
-const items = ref([]);
+let items = ref([]);
 
 const selectedFilter = ref("all");
 
@@ -163,7 +134,6 @@ const computedFilters = computed(() => {
   const takeAwayCount = items.value.filter(
     (item) => item.type === "takeaway",
   ).length;
-
   return [
     {label: `All ${allCount}`, value: "all"},
     {label: `Dine in ${dineInCount}`, value: "dinein"},
@@ -173,12 +143,9 @@ const computedFilters = computed(() => {
 
 function handleFilterChange(selectedValue) {
   selectedFilter.value = selectedValue;
-  console.log(selectedFilter.value);
 }
 function fetchItems() {
-  
   itemStore.fetchItems();
-  items.value = itemStore.getItems
 }
 </script>
 
