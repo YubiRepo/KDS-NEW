@@ -57,41 +57,11 @@
       </div>
     </div>
     <div class="d-flex flex-wrap justify-content-between gap-3">
-      <div
-        class="item-container"
-        v-for="(item, index) in filteredItems"
-        :key="index">
-        <div class="container p-2 border item-card ">
-          <div
-            class="d-flex justify-content-between py-3 rounded border px-2">
-            <div class="d-flex flex-column justify-content-start">
-              <span class="" style="font-weight: bold;">{{ item.itemName }}</span>
-              <span>{{ item.itemName }}</span>
-            </div>
-            <button type="button" class="btn btn-primary">Submit</button>
-          </div>
-          <div class="p-2">
-            <table class="table table-bordered">
-              <thead style="background: red;">
-                <tr align="center">
-                  <th style="background-color:#1c5192;" class="text-white">table</th>
-                  <th style="background-color:#1c5192;" class="text-white">order</th>
-                  <th style="background-color:#1c5192;" class="text-white">out</th>
-                  <th style="background-color:#1c5192;" class="text-white">on process</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr align="center">
-                  <td>{{ item.orderCount }}</td>
-                  <td>{{ item.orderCount }}</td>
-                  <td>{{ item.doneCount }}</td>
-                  <td>{{ item.notDoneCount }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <ItemCarTable
+          v-for="(item, index) in filteredItems"
+          :key="index"
+          :item="item"
+        />
     </div>
   </div>
 </template>
@@ -100,6 +70,7 @@
 import FilterTypeGroup from "@/components/FilterTypeGroup.vue";
 import GridItemCard from "@/components/GridItemCard.vue";
 import ItemCard from "@/components/ItemCard.vue";
+import ItemCarTable from "@/components/ItemCardTable.vue";
 import moment from "moment";
 import { computed, onMounted, ref } from "vue";
 
