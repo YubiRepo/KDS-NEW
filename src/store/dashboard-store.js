@@ -14,24 +14,25 @@ export const useDashboardStore = defineStore("dashboard", () => {
     take_away_count: 0,
   });
 
+  const tables = ref([]);
+
   const selectedFilter = ref("all");
 
   const orderTypeDTO = (items) => {
     return items?.data?.map((d) => {
       return {
-        name: d.menuname,
-        qty_order: parseInt(d.qty),
-        qty_done: parseInt(d.qtyready),
-        qty_process: parseInt(d.ready),
+        id: d?.MenuKey,
+        name: d?.menuname,
+        qty_order: parseInt(d?.qty),
+        qty_done: parseInt(d?.qtyready),
+        qty_process: parseInt(d?.ready),
       };
     });
   };
 
   const calculateTotalLength = (items) => {
     let totalLength = 0;
-    items?.forEach((order) => {
-      totalLength += order.data.length;
-    });
+    items?.forEach((order) => totalLength += order?.data?.length);
     return parseInt(totalLength);
   };
 
@@ -39,7 +40,10 @@ export const useDashboardStore = defineStore("dashboard", () => {
     return {
       dine_in: response?.Dine_In?.map((item) => orderTypeDTO(item))?.flat(),
       take_away: response?.Take_Away?.map((item) => orderTypeDTO(item))?.flat(),
-      items: [...response?.Dine_In?.map((item) => orderTypeDTO(item))?.flat(), ...response?.Take_Away?.map((item) => orderTypeDTO(item))?.flat()],
+      items: [
+        ...response?.Dine_In?.map((item) => orderTypeDTO(item))?.flat(),
+        ...response?.Take_Away?.map((item) => orderTypeDTO(item))?.flat(),
+      ],
       all_count:
         calculateTotalLength(response?.Dine_In) +
         calculateTotalLength(response?.Take_Away),
@@ -56,6 +60,17 @@ export const useDashboardStore = defineStore("dashboard", () => {
 
         if (response?.Item !== "Not Found") {
           orders.value = ordersDTO(response);
+
+          tables.value = response?.Item?.map((res) => {
+            return {
+              id: res?.MenuKey,
+              name: res?.menuname,
+              qty_order: parseInt(res?.jumlah),
+              qty_done: parseInt(res?.jumlahready),
+              qty_process: parseInt(res?.selisih),
+              names: res?.TblName,
+            };
+          });
         }
       })
       .catch((error) => {
@@ -63,10 +78,22 @@ export const useDashboardStore = defineStore("dashboard", () => {
       });
   };
 
+  const getItemDetail = (id) => {
+    return orders?.value?.items?.find((item) => item.id === id);
+  }
+
+  const updateOrderQty = (id, payload) => {
+    console.log("id", id)
+    console.log("payload", payload)
+  }
+
   return {
     orders,
     getOrders,
     selectedFilter,
+    tables,
+    getItemDetail,
+    updateOrderQty
   };
 });
 

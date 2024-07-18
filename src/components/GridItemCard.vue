@@ -11,9 +11,9 @@
         </p>
     </div> -->
 
-    <div class="card p-2 rounded item-card w-100 h- mb-3">
-      <div class="d-flex flex-column justify-content-center py-3 rounded" style="background-color: #1c5192">
-        <span class="text-center text-white" style="font-weight: bold">{{ item?.name }}</span>
+    <div class="card p-2 rounded item-card mb-3" @click="goToDetail(item?.id)">
+      <div class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer" style="background-color: #1c5192">
+        <span class="text-center text-white fw-bold">{{ item?.name }}</span>
       </div>
       <hr class="mb-1 mt-2 mx-2">
       <div class="row py-1 px-3">
@@ -43,19 +43,26 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ItemCard',
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
+<script setup>
+import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true,
   },
-};
+});
+
+const goToDetail = (id) => {
+  router.push({ name: "ItemDetail", params: { id: id } });
+}
 </script>
 
-<style scoped>
+
+<style>
 /* Tambahkan CSS kustom Anda di sini */
 .item-card {
   width: 100%;

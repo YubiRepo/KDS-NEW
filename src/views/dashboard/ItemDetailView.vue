@@ -1,73 +1,89 @@
 <template>
-  <div class="container-fluid py-2">
-    <div class="row">
-      <div class="col d-flex align-items-center justify-content-center">
-        <h4 class="m-0 p-0">{{ date }}</h4>
-      </div>
-      <div class="col d-flex align-items-center justify-content-center">
-        <div class="px-2 align-self-end">
-          <div class="d-flex align-items-center justify-content-center">
-            <img
-              src="https://randomuser.me/api/portraits/lego/7.jpg"
-              class="img-thumbnail rounded-circle mr-2"
-              style="width: 40px; height: 40px"
-              alt="" />
-            <div class="d-flex flex-column">
-              <span class="">Jamal</span>
-              <span class="">Admin</span>
+  <NavBar />
+
+  <div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-start">
+      <button class="btn btn-secondary btn-lg rounded-1" @click="this.$router.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+          viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+        </svg>
+        Back
+      </button>
+      <div class="card p-2 rounded item-card mb-3">
+        <div class="d-flex flex-column justify-content-center py-3 rounded" style="background-color: #1c5192">
+          <span class="text-center text-white fw-bold">Item NBam</span>
+        </div>
+        <hr class="mb-1 mt-2 mx-2">
+        <div class="row py-1 px-3">
+          <div class="col item-card">
+            <div
+              class="bg-primary p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
+              <span>Order</span>
+              <h2>{{ item?.qty_order ?? 0 }}</h2>
+            </div>
+          </div>
+          <div class="col item-card">
+            <div
+              class="bg-success p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
+              <span>Done</span>
+              <h2>{{ item?.qty_done ?? 0 }}</h2>
+            </div>
+          </div>
+          <div class="col item-card">
+            <div
+              class="bg-warning p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
+              <span class="text-center">Not Done</span>
+              <h2>{{ item?.qty_process ?? 0 }}</h2>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-start">
-      <button class="btn btn-secondary" @click="this.$router.back()" style="width: 100px">Back</button>
-      <div
-        class="border p-2 d-flex flex-column justify-content-center align-items-center">
-        <h4 class="mb-2">Item Name</h4>
-        <div class="d-flex gap-2">
-          <div
-            class="bg-primary p-2 text-white d-flex flex-column justify-content-center align-items-center"
-            style="width: 100px">
-            <span>Order</span>
-            <h2>{{ 1 }}</h2>
-          </div>
-          <div
-            class="bg-success p-2 text-white d-flex flex-column justify-content-center align-items-center"
-            style="width: 100px">
-            <span>Order</span>
-            <h2>{{ 1 }}</h2>
-          </div>
-          <div
-            class="bg-warning p-2 text-white d-flex flex-column justify-content-center align-items-center"
-            style="width: 100px">
-            <span>Order</span>
-            <h2>{{ 1 }}</h2>
-          </div>
-        </div>
-      </div>
-      <button class="btn btn-primary" style="width: 100px">submit</button>
+      <button class="btn btn-lg text-white rounded-1" style="background-color: #1c5192" @click="submitQty()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy"
+          viewBox="0 0 16 16">
+          <path d="M11 2H9v3h2z" />
+          <path
+            d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z" />
+        </svg>
+        Submit
+      </button>
     </div>
     <div class="my-4">
-      <table class="table table-bordered">
+      <table class="table table-hover table-striped table-responsive">
         <thead>
-          <tr align="center">
-            <th class="text-white" style="background-color: #1c5192">table</th>
-            <th class="text-white" style="background-color: #1c5192">order</th>
-            <th class="text-white" style="background-color: #1c5192">out</th>
-            <th class="text-white" style="background-color: #1c5192">
-              on process
-            </th>
+          <tr>
+            <th class="text-white rounded-start" style="background-color: #1c5192">Table</th>
+            <th class="text-white" style="background-color: #1c5192">Order</th>
+            <th class="text-white" style="background-color: #1c5192">Done</th>
+            <th class="text-white rounded-end" style="background-color: #1c5192">Not Done</th>
           </tr>
         </thead>
         <tbody>
-          <tr align="center" v-for="(item, index) in itemStore.getItems">
-            <td>{{ 1 }}</td>
-            <td>{{ 1 }}</td>
-            <td>{{ 1 }}</td>
-            <td>{{ 1 }}</td>
+          <tr v-for="(t, i) in item?.tables" :key="i" class="rounded-1">
+            <td>{{ t?.name }}</td>
+            <td>{{ t?.qty_order }}</td>
+            <td width="200">
+              <div class="input-group">
+                <span class="input-group-text cursor-pointer rounded-1" @click="decrement(i)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash"
+                    viewBox="0 0 16 16">
+                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                  </svg>
+                </span>
+                <input type="text" class="form-control" aria-label="Qty Done" v-model="t.qty_done" readonly>
+                <span class="input-group-text cursor-pointer rounded-1" @click="increment(i)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
+                    viewBox="0 0 16 16">
+                    <path
+                      d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                  </svg>
+                </span>
+              </div>
+            </td>
+            <td>{{ t?.qty_process }}</td>
+            <!-- ({{ t?.qty_process - t?.qty_done }}) -->
           </tr>
         </tbody>
       </table>
@@ -76,32 +92,87 @@
 </template>
 
 <script setup>
-import useItemStore from "@/store/item-store";
-import moment from "moment";
-import { defineProps, onMounted, ref } from "vue";
+import moment from "moment"
+import { defineProps, onMounted, ref } from "vue"
+import NavBar from "../../components/NavBar.vue"
+import { useDashboardStore } from "../../store/dashboard-store"
+import { useRouter } from "vue-router"
+
+const dashboardStore = useDashboardStore()
+const router = useRouter()
+
+const item = ref({
+  id: 1,
+  name: "Soju",
+  qty_order: 15,
+  qty_done: 4,
+  qty_process: 11,
+  tables: [
+    {
+      id: 1,
+      name: "Table 1",
+      qty_order: 5,
+      qty_done: 0,
+      qty_process: 5,
+    },
+    {
+      id: 1,
+      name: "10 Not Used",
+      qty_order: 10,
+      qty_done: 4,
+      qty_process: 6,
+    }
+  ]
+})
 
 const props = defineProps({
   id: {
     type: String,
     required: true,
   },
-});
+})
 
-const date = ref(moment().format("dddd, DD MMMM YYYY , hh:mm:ss"));
+const date = ref(moment().format("dddd, DD MMMM YYYY , hh:mm:ss"))
 
-function countingDate() {
+const increment = (i) => {
+  if(item.value.tables[i].qty_done < item.value.tables[i].qty_order){
+    item.value.qty_done++
+    item.value.qty_process--
+
+    item.value.tables[i].qty_done++
+    item.value.tables[i].qty_process--
+  }
+}
+
+const decrement = (i) => {
+  if(item.value.tables[i].qty_done > 0){
+    item.value.qty_done--
+    item.value.qty_process++
+
+    item.value.tables[i].qty_done--
+    item.value.tables[i].qty_process++
+
+  }
+
+  console.log("decrement", item.value.tables[i].qty_done)
+}
+
+const submitQty = () => {
+  dashboardStore.updateOrderQty(item?.value?.id, item?.value?.tables)
+
+  router.push('/')
+}
+
+const countingDate = () => {
   setInterval(() => {
-    date.value = moment().format("dddd, DD MMMM YYYY , hh:mm:ss");
-  }, 1000);
+    date.value = moment().format("dddd, DD MMMM YYYY , hh:mm:ss")
+  }, 1000)
 }
 
 onMounted(() => {
-  console.log("ItemDetailView mounted with id:", props.id);
-  itemStore.fetchItems();
-  countingDate();
-});
-
-const itemStore = useItemStore();
+  console.log("ItemDetailView mounted with id:", props.id)
+  countingDate()
+})
 </script>
 
 <style scoped></style>

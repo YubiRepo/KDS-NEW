@@ -9,4 +9,5 @@ export default defineConfig({
       "@": "/src",
     },
   },
+  parserPlugins: ['optionalChaining', 'optionalChainingAssign']
 });

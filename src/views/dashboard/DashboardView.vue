@@ -1,36 +1,6 @@
 <template>
-  <div class="container-fluid py-3 border-bottom">
-    <div class="row">
-      <div class="col d-flex align-items-center justify-content-center">
-        <div class="btn-group gap-2">
-          <v-btn prepend-icon="mdi-refresh" height="40" min-width="164" class="bg-primary" @click="getOrders()"
-            :disabled="loadingRefresh">
-            Refresh
-          </v-btn>
-          <v-btn-toggle v-model="viewMode" color="primary" rounded="0" group>
-            <v-btn value="1" height="40"> View 1 </v-btn>
-            <v-btn value="2" height="40"> View 2 </v-btn>
-            <v-btn value="3" height="40"> View 3 </v-btn>
-          </v-btn-toggle>
-        </div>
-      </div>
-      <div class="col d-flex align-items-center justify-content-center">
-        <h4 class="m-0 p-0">{{ date }}</h4>
-      </div>
-      <div class="col d-flex align-items-center justify-content-center">
-        <div class="px-2 align-self-end">
-          <div class="d-flex align-items-center justify-content-center">
-            <img src="https://randomuser.me/api/portraits/lego/7.jpg" class="img-thumbnail rounded-circle mr-2"
-              style="width: 40px; height: 40px" alt="" />
-            <div class="d-flex flex-column">
-              <span class="">Jamal</span>
-              <span class="">Admin</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <NavBar @get-orders="getOrders()"/>
+
   <div class="container">
     <div v-if="viewMode == 1">
       <div class="row my-4">
@@ -60,33 +30,20 @@
         </template>
       </div>
     </div>
-    <div class="row" v-if="viewMode == 2">
-      <div class="col-md-3 mb-2 col-lg-3 col-12" v-for="(item, index) in itemStore.getItems" :key="index">
-        <ItemCard :item="item" />
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup>
+import NavBar from "../../components/NavBar.vue"
 import GridItemCard from "@/components/GridItemCard.vue"
-import ItemCard from "@/components/ItemCard.vue"
-import moment from "moment"
 import { computed, onMounted, ref, watch } from "vue"
 import { useDashboardStore } from "../../store/dashboard-store"
 
 const dashboardStore = useDashboardStore()
-const date = ref(moment().format("dddd, DD MMMM YYYY , hh:mm:ss"))
 const viewMode = ref(1)
 const selectedFilter = ref("all")
 const loadingRefresh = ref(false)
 const orders = ref(null)
-
-const countingDate = () => {
-  setInterval(() => {
-    date.value = moment().format("dddd, DD MMMM YYYY , hh:mm:ss")
-  }, 1000)
-}
 
 const computedFilters = computed(() => {
   return [
@@ -103,7 +60,7 @@ const handleSelectedFilter = (event) => {
 
 const getOrders = async () => {
   await dashboardStore.getOrders()
-  
+
   switch (selectedFilter.value) {
     case "dine_in":
       orders.value = dashboardStore?.orders?.dine_in
@@ -113,19 +70,21 @@ const getOrders = async () => {
       break;
     default:
       orders.value = dashboardStore?.orders?.items
+      break;
   }
 }
 
-watch(selectedFilter, () => {
-  getOrders()
-})
+watch(selectedFilter, () => getOrders())
 
 onMounted(() => {
-  countingDate()
   loadingRefresh.value = true
   getOrders()
   loadingRefresh.value = false
 })
+
+// setInterval(() => {
+//   getOrders()
+// }, 10_000)
 </script>
 
 <style scoped>
