@@ -97,6 +97,7 @@ import { defineProps, onMounted, ref } from "vue"
 import NavBar from "../../components/NavBar.vue"
 import { useDashboardStore } from "../../store/dashboard-store"
 import { useRouter } from "vue-router"
+import { toast } from 'vue3-toastify';
 
 const dashboardStore = useDashboardStore()
 const router = useRouter()
@@ -135,7 +136,7 @@ const props = defineProps({
 const date = ref(moment().format("dddd, DD MMMM YYYY , hh:mm:ss"))
 
 const increment = (i) => {
-  if(item.value.tables[i].qty_done < item.value.tables[i].qty_order){
+  if (item.value.tables[i].qty_done < item.value.tables[i].qty_order) {
     item.value.qty_done++
     item.value.qty_process--
 
@@ -145,7 +146,7 @@ const increment = (i) => {
 }
 
 const decrement = (i) => {
-  if(item.value.tables[i].qty_done > 0){
+  if (item.value.tables[i].qty_done > 0) {
     item.value.qty_done--
     item.value.qty_process++
 
@@ -159,8 +160,10 @@ const decrement = (i) => {
 
 const submitQty = () => {
   dashboardStore.updateOrderQty(item?.value?.id, item?.value?.tables)
+  
+  toast.success("Successfully updated!")
 
-  router.push('/')
+  setTimeout(() => router.push({ name: "Dashboard" }), 1_500)
 }
 
 const countingDate = () => {
@@ -175,4 +178,8 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style>
+.Toastify__progress-bar--success {
+  color: #188754 !important;
+}
+</style>
