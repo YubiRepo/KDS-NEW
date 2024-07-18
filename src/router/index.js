@@ -8,7 +8,7 @@ const routes = [
     component: DefaultLayout,
     children: [
       {
-        path: 'dashboard',
+        path: '/',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/DashboardView.vue'),
         meta: { requiresAuth: true },
@@ -64,7 +64,7 @@ router.beforeEach((to, from, next) => {
     return next('/login');
   }
   if (publicPages.includes(to.path) && loggedIn) {
-    return next('/dashboard');
+    return next('/');
   }
 
   next();
