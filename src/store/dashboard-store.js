@@ -29,6 +29,9 @@ export const useDashboardStore = defineStore("dashboard", () => {
         qty_order: parseInt(d?.qty),
         qty_done: parseInt(d?.qtyready),
         qty_process: parseInt(d?.ready),
+        date: items?.salesdate,
+        sales_sequence: items?.salesseq,
+        menu_sequence: d?.menuseq,
         type: type,
       };
     });
@@ -149,7 +152,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
     const groupedByMenukey = {};
 
     items.forEach((item) => {
-      const { menukey, menuname, tblkey, tblname, qty, readyqty, balance } =
+      const { menukey, menuname, tblkey, tblname, qty, readyqty, balance, salesdate, salesseq, menuseq } =
         item;
 
       if (!groupedByMenukey[menukey]) {
@@ -166,6 +169,9 @@ export const useDashboardStore = defineStore("dashboard", () => {
         qty_order: parseInt(qty),
         qty_done: parseInt(readyqty),
         qty_process: parseInt(balance),
+        date: salesdate,
+        sales_sequence: salesseq,
+        menu_sequence: menuseq,
       });
     });
 
@@ -186,10 +192,51 @@ export const useDashboardStore = defineStore("dashboard", () => {
     );
   };
 
-  const updateOrderQty = (id, payload) => {
+  // const updateOrderQty = async (id, payload) => {
+  //   console.log("id", id);
+  //   console.log("payload", payload);
+
+  //   await ApiService.post("/apporder/api/updatecheckerall", {
+  //     detailorder: payload?.map((p) => {
+  //       return {
+  //         salesdate: p?.date,
+  //         salesseq: p?.sales_sequence,
+  //         menuseq: p?.menu_sequence,
+  //         qtyready: p?.qty_done,
+  //       };
+  //     })
+  //   })
+  //   .then((response) => {
+  //     console.log(response)
+  //   })
+  // };
+
+  const updateOrderQty = async (id, payload) => {
     console.log("id", id);
     console.log("payload", payload);
+  
+    const requestBody = {
+      detailorder: payload?.map((p) => ({
+        salesdate: p?.date,
+        salesseq: p?.sales_sequence,
+        menuseq: p?.menu_sequence,
+        qtyready: p?.qty_done,
+      }))
+    };
+  
+    try {
+      const response = await fetch("http://192.168.1.55:8081/apporder/api/updatecheckerall", {
+        method: "POST",
+        body: JSON.stringify(requestBody)
+      });
+  
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
+  
 
   return {
     orders,

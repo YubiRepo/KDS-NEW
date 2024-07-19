@@ -139,10 +139,7 @@ const decrement = (i) => {
 
     item.value.tables[i].qty_done--
     item.value.tables[i].qty_process++
-
   }
-
-  console.log("decrement", item.value.tables[i].qty_done)
 }
 
 const refresh = () => {
@@ -167,14 +164,16 @@ const countingDate = () => {
 const getItemDetail = async () => {
   await dashboardStore.getItemDetail()
 
+  const sameItem = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)
+
   item.value.id = props.id
-  item.value.name = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.name
+  item.value.name = sameItem?.name
   item.value.tables = dashboardStore.detail_items?.find((i) => i?.id == props.id)?.tables
-  item.value.qty_order = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.qty_order
-  item.value.qty_done = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.qty_done
-  item.value.qty_process = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.qty_order - dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.qty_done
+  item.value.qty_order = sameItem?.qty_order
+  item.value.qty_done = sameItem?.qty_done
+  item.value.qty_process = sameItem?.qty_order - sameItem?.qty_done
   
-  console.log(item.value)
+  console.log(item.value, sameItem)
 }
 
 onMounted(() => {
