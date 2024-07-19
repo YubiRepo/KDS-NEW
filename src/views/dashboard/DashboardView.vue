@@ -1,8 +1,8 @@
 <template>
-  <NavBar @get-orders="getOrders()"/>
+  <NavBar @refresh="refresh()" />
 
   <div class="container">
-    <div v-if="viewMode == 1">
+    <div>
       <div class="row my-4">
         <div class="d-flex justify-content-center">
           <div class="btn-group btn-group-lg" role="group" aria-label="Order type toggle button group">
@@ -17,18 +17,64 @@
       </div>
       <div class="row">
         <template v-if="orders?.length > 0">
-          <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-2 col-sm-12 mb-2" v-for="(item, index) in orders" :key="index">
+          <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3 col-sm-12 mb-2" v-for="(item, index) in orders" :key="index">
             <GridItemCard :item="item" />
           </div>
         </template>
         <template v-else>
           <div class="col-md-12 col-lg-12 col-sm-12 mt-5 mb-2">
             <h4 class="text-center">There is no order yet!,
-              <a href="#" @click="getOrders()">Refresh</a>.
+              <span v-if="loading">
+                Loading...
+              </span>
+              <a href="#" @click="refresh()" :disabled="loading" class="cursor-pointer" v-else>
+                Refresh.
+              </a>
             </h4>
           </div>
         </template>
       </div>
+
+      <!-- <div class="row">
+        <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-2 col-sm-12 mb-2">
+          <div class="card p-2 rounded item-card mb-3">
+            <div class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer"
+              style="background-color: #1c5192">
+              <span class="text-center text-white fw-bold">Item Name</span>
+            </div>
+
+            <div class="d-flex justify-content-between mt-2">
+              <div>
+                <h6>Order</h6>
+              </div>
+              <div>
+                <h6>37</h6>
+              </div>
+            </div>
+            <hr class="m-0">
+
+            <div class="d-flex justify-content-between mt-2">
+              <div>
+                <h6>Done</h6>
+              </div>
+              <div>
+                <h6>37</h6>
+              </div>
+            </div>
+            <hr class="m-0">
+
+            <div class="d-flex justify-content-between mt-2">
+              <div>
+                <h6>Process</h6>
+              </div>
+              <div>
+                <h6>37</h6>
+              </div>
+            </div>
+            <hr class="m-0">
+          </div>
+        </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -38,11 +84,11 @@ import NavBar from "../../components/NavBar.vue"
 import GridItemCard from "@/components/GridItemCard.vue"
 import { computed, onMounted, ref, watch } from "vue"
 import { useDashboardStore } from "../../store/dashboard-store"
+import { toast } from 'vue3-toastify';
 
 const dashboardStore = useDashboardStore()
-const viewMode = ref(1)
 const selectedFilter = ref("all")
-const loadingRefresh = ref(false)
+const loading = ref(false)
 const orders = ref(null)
 
 const computedFilters = computed(() => {
@@ -74,12 +120,29 @@ const getOrders = async () => {
   }
 }
 
+const refresh = () => {
+  loading.value = true
+
+  setTimeout(() => {
+    getOrders()
+
+    loading.value = false
+
+    toast.success('Refresh successfully!')
+  }, 500)
+}
+
 watch(selectedFilter, () => getOrders())
 
 onMounted(() => {
-  loadingRefresh.value = true
-  getOrders()
-  loadingRefresh.value = false
+  loading.value = true
+
+  setTimeout(() => {
+    getOrders()
+
+    loading.value = false
+
+  }, 250)
 })
 
 // setInterval(() => {
@@ -98,19 +161,6 @@ onMounted(() => {
   width: 100%;
 }
 
-.item-container {
-  flex: 1 1 calc(33.333% - 1rem);
-  max-width: calc(33.333% - 1rem);
-  max-height: 300px;
-}
-
-@media (max-width: 768px) {
-  .item-container {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-}
-
 .btn-group-lg .btn {
   border-color: #1c5192 !important;
   border-radius: 3px;
@@ -119,37 +169,12 @@ onMounted(() => {
   margin-right: 10px;
 }
 
-.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+.btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
   background-color: #1c5192 !important;
   color: #ffff !important;
 }
-
-/* material design */
-/* .btn-group-lg .btn {
-  position: relative;
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  font-size: 1.25rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.02857em;
-  background-color: #fff;
-  border: none;
-  border-radius: 4px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.3s ease, background-color 0.3s ease;
-  color: #333;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
-
-}
-
-.btn-outline-primary:hover {
-  background-color: #1c5192 !important;
-  color: #ffff;
-}
-
-.btn-check:active, .btn-check:checked {
-  background-color: #1c5192 !important;
-  color: #ffff;
-} */
 </style>

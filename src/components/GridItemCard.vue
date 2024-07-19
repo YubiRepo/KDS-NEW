@@ -34,11 +34,15 @@
         <div class="col item-card">
           <div
             class="bg-warning p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
-            <span class="text-center">Not Done</span>
+            <span class="text-center">Process</span>
             <h2>{{ item?.qty_process ?? 0 }}</h2>
           </div>
         </div>
       </div>
+
+      <!-- <div class="card-footer mt-1 pt-1 px-0 pb-2 text-center text-white rounded-1" style="background-color: #1c5192" v-if="item?.type == 'dine_in_take_away'">
+        <span>Dine In & Take Away</span>
+      </div> -->
     </div>
   </div>
 </template>

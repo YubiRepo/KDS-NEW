@@ -1,5 +1,5 @@
 <template>
-  <NavBar />
+  <NavBar @refresh="refresh()"/>
 
   <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between align-items-start">
@@ -11,9 +11,11 @@
         </svg>
         Back
       </button>
-      <div class="card p-2 rounded item-card mb-3">
+      <div class="card p-2 rounded item-card mb-3 mx-5" style="max-width: 700px;">
         <div class="d-flex flex-column justify-content-center py-3 rounded" style="background-color: #1c5192">
-          <span class="text-center text-white fw-bold">Item NBam</span>
+          <span class="text-center text-white fw-bold">
+            {{ item?.name }}
+          </span>
         </div>
         <hr class="mb-1 mt-2 mx-2">
         <div class="row py-1 px-3">
@@ -34,7 +36,7 @@
           <div class="col item-card">
             <div
               class="bg-warning p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
-              <span class="text-center">Not Done</span>
+              <span class="text-center">Process</span>
               <h2>{{ item?.qty_process ?? 0 }}</h2>
             </div>
           </div>
@@ -51,13 +53,13 @@
       </button>
     </div>
     <div class="my-4">
-      <table class="table table-hover table-striped table-responsive">
+      <table class="table table-hover table-striped table-responsive" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)">
         <thead>
           <tr>
             <th class="text-white rounded-start" style="background-color: #1c5192">Table</th>
             <th class="text-white" style="background-color: #1c5192">Order</th>
             <th class="text-white" style="background-color: #1c5192">Done</th>
-            <th class="text-white rounded-end" style="background-color: #1c5192">Not Done</th>
+            <th class="text-white rounded-end" style="background-color: #1c5192">Process</th>
           </tr>
         </thead>
         <tbody>
@@ -103,27 +105,12 @@ const dashboardStore = useDashboardStore()
 const router = useRouter()
 
 const item = ref({
-  id: 1,
-  name: "Soju",
-  qty_order: 15,
-  qty_done: 4,
-  qty_process: 11,
-  tables: [
-    {
-      id: 1,
-      name: "Table 1",
-      qty_order: 5,
-      qty_done: 0,
-      qty_process: 5,
-    },
-    {
-      id: 1,
-      name: "10 Not Used",
-      qty_order: 10,
-      qty_done: 4,
-      qty_process: 6,
-    }
-  ]
+  id: null,
+  name: "",
+  qty_order: 0,
+  qty_done: 0,
+  qty_process: 0,
+  tables: []
 })
 
 const props = defineProps({
@@ -158,9 +145,14 @@ const decrement = (i) => {
   console.log("decrement", item.value.tables[i].qty_done)
 }
 
+const refresh = () => {
+  getItemDetail()
+  toast.success('Refresh successfully!')
+}
+
 const submitQty = () => {
   dashboardStore.updateOrderQty(item?.value?.id, item?.value?.tables)
-  
+
   toast.success("Successfully updated!")
 
   setTimeout(() => router.push({ name: "Dashboard" }), 1_500)
@@ -172,7 +164,21 @@ const countingDate = () => {
   }, 1000)
 }
 
+const getItemDetail = async () => {
+  await dashboardStore.getItemDetail()
+
+  item.value.id = props.id
+  item.value.name = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.name
+  item.value.tables = dashboardStore.detail_items?.find((i) => i?.id == props.id)?.tables
+  item.value.qty_order = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.qty_order
+  item.value.qty_done = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.qty_done
+  item.value.qty_process = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.qty_order - dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.qty_done
+  
+  console.log(item.value)
+}
+
 onMounted(() => {
+  getItemDetail()
   console.log("ItemDetailView mounted with id:", props.id)
   countingDate()
 })
