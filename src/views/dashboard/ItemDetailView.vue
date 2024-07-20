@@ -1,7 +1,7 @@
 <template>
-  <NavBar @refresh="refresh()"/>
+  <NavBar @refresh="refresh()" />
 
-  <div class="container-fluid mt-4">
+  <div class="container-fluid mt-4" v-if="item?.name">
     <div class="d-flex justify-content-between align-items-start">
       <button class="btn btn-secondary btn-lg rounded-1" @click="this.$router.back()">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
@@ -36,20 +36,21 @@
           <div class="col item-card">
             <div
               class="bg-warning p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
-              <span class="text-center">Process</span>
+              <span class="text-center">Not Done</span>
               <h2>{{ item?.qty_process ?? 0 }}</h2>
             </div>
           </div>
         </div>
       </div>
-      <button class="btn btn-lg text-white rounded-1" style="background-color: #1c5192" @click="submitQty()">
+      <button class="btn btn-lg text-white rounded-1" style="background-color: #1c5192" @click="submitQty()"
+        :disabled="loadingSubmit">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy"
           viewBox="0 0 16 16">
           <path d="M11 2H9v3h2z" />
           <path
             d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z" />
         </svg>
-        Submit
+        {{ loadingSubmit ? 'Saving...' : 'Save' }}
       </button>
     </div>
     <div class="my-4">
@@ -59,7 +60,7 @@
             <th class="text-white rounded-start" style="background-color: #1c5192">Table</th>
             <th class="text-white" style="background-color: #1c5192">Order</th>
             <th class="text-white" style="background-color: #1c5192">Done</th>
-            <th class="text-white rounded-end" style="background-color: #1c5192">Process</th>
+            <th class="text-white rounded-end" style="background-color: #1c5192">Not Done</th>
           </tr>
         </thead>
         <tbody>
@@ -91,6 +92,16 @@
       </table>
     </div>
   </div>
+
+  <div class="container-fluid mt-4" v-else>
+    <div class="row">
+      <div class="col-12">
+        <h4 class="text-center">Item not found,
+          <router-link :to="'/'">Back.</router-link>
+        </h4>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -103,6 +114,7 @@ import { toast } from 'vue3-toastify';
 
 const dashboardStore = useDashboardStore()
 const router = useRouter()
+const loadingSubmit = ref(false)
 
 const item = ref({
   id: null,
@@ -148,11 +160,15 @@ const refresh = () => {
 }
 
 const submitQty = () => {
+  loadingSubmit.value = true
   dashboardStore.updateOrderQty(item?.value?.id, item?.value?.tables)
 
   toast.success("Successfully updated!")
 
-  setTimeout(() => router.push({ name: "Dashboard" }), 1_500)
+  setTimeout(() => {
+    loadingSubmit.value = false
+    router.push({ name: "Dashboard" })
+  }, 1_000)
 }
 
 const countingDate = () => {
@@ -164,15 +180,17 @@ const countingDate = () => {
 const getItemDetail = async () => {
   await dashboardStore.getItemDetail()
 
-  const sameItem = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)
+  const sameItem = dashboardStore.detail_items?.find((i) => i?.id == props.id)
+  const qtyOrder = sameItem?.tables?.reduce((acc, t) => acc + t.qty_order, 0)
+  const qtyDone = sameItem?.tables?.reduce((acc, t) => acc + t.qty_done, 0)
 
   item.value.id = props.id
-  item.value.name = sameItem?.name
-  item.value.tables = dashboardStore.detail_items?.find((i) => i?.id == props.id)?.tables
-  item.value.qty_order = sameItem?.qty_order
-  item.value.qty_done = sameItem?.qty_done
-  item.value.qty_process = sameItem?.qty_order - sameItem?.qty_done
-  
+  item.value.name = dashboardStore?.orders?.items?.find((i) => i?.id == props.id)?.name
+  item.value.tables = sameItem?.tables
+  item.value.qty_order = qtyOrder
+  item.value.qty_done = qtyDone
+  item.value.qty_process = qtyOrder - qtyDone
+
   console.log(item.value, sameItem)
 }
 

@@ -25,7 +25,7 @@
               </th>
               <th class="text-white" style="background-color: #1c5192">out</th>
               <th class="text-white" style="background-color: #1c5192">
-                on process
+                Not Done
               </th>
             </tr>
           </thead>

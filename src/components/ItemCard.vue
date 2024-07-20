@@ -8,7 +8,7 @@
     <div class="p-2">
       <FormRow label="Order" :value="item.order ??0" />
       <FormRow label="Out" :value="item.out ??0" />
-      <FormRow label="On Process" :value="item.process ??0  " />
+      <FormRow label="Not Done" :value="item.process ??0  " />
     </div>
   </div>
 </template>

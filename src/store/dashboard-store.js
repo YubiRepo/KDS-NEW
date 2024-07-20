@@ -28,7 +28,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
         name: d?.menuname,
         qty_order: parseInt(d?.qty),
         qty_done: parseInt(d?.qtyready),
-        qty_process: parseInt(d?.ready),
+        qty_process: parseInt(d?.qty) - parseInt(d?.qtyready),
         date: items?.salesdate,
         sales_sequence: items?.salesseq,
         menu_sequence: d?.menuseq,
@@ -78,6 +78,21 @@ export const useDashboardStore = defineStore("dashboard", () => {
     }
   };
 
+  const increaseQtyIfIdMatch = (data) => {
+    return Object.values(
+      data.reduce((acc, item) => {
+        if (!acc[item.id]) {
+          acc[item.id] = { ...item };
+        } else {
+          acc[item.id].qty_order += item.qty_order;
+          acc[item.id].qty_done += item.qty_done;
+          acc[item.id].qty_process += item.qty_process;
+        }
+        return acc;
+      }, {})
+    );
+  };
+
   const ordersDTO = (response) => {
     let takeAway = Array.isArray(response?.Take_Away)
       ? response?.Take_Away?.map((item) =>
@@ -90,12 +105,21 @@ export const useDashboardStore = defineStore("dashboard", () => {
       : null;
 
     let items = response?.Item?.map((item) => {
+      console.log(
+        `item: ${item.menuname}, qty_order: ${
+          parseInt(item?.jumlah) +
+          takeAway?.reduce(
+            (acc, t) => (t?.id == item?.MenuKey ? acc + t.qty_order : 0),
+            0
+          )
+        }`
+      );
       return {
         id: item?.MenuKey,
         name: item?.menuname,
         qty_order: parseInt(item?.jumlah),
         qty_done: parseInt(item?.jumlahready),
-        qty_process: parseInt(item?.selisih),
+        qty_process: parseInt(item?.jumlah) - parseInt(item?.jumlahready),
         ...setOrderTypeItem(item?.MenuKey, takeAway, dineIn),
       };
     });
@@ -108,16 +132,26 @@ export const useDashboardStore = defineStore("dashboard", () => {
     //   items.push(...dineIn);
     // }
 
+    // const dineInFiltered = increaseQtyIfIdMatch(
+    //   dineIn?.filter((item) => item?.qty_process !== 0)
+    // );
+    // const takeAwayFiltered = increaseQtyIfIdMatch(
+    //   takeAway?.filter((item) => item?.qty_process !== 0)
+    // );
+    
+    const dineInFiltered = dineIn?.filter((item) => item?.qty_process !== 0)
+    const takeAwayFiltered = takeAway?.filter((item) => item?.qty_process !== 0)
+
     return {
-      dine_in: dineIn,
-      take_away: takeAway,
+      dine_in: dineInFiltered,
+      take_away: takeAwayFiltered,
       items: items,
       // all_count:
       //   calculateTotalLength(response?.Dine_In) +
       //   calculateTotalLength(response?.Take_Away),
       all_count: response?.Item?.length,
-      dine_in_count: calculateTotalLength(response?.Dine_In),
-      take_away_count: calculateTotalLength(response?.Take_Away),
+      dine_in_count: dineInFiltered?.length ?? 0,
+      take_away_count: takeAwayFiltered?.length ?? 0,
     };
   };
 
@@ -152,8 +186,18 @@ export const useDashboardStore = defineStore("dashboard", () => {
     const groupedByMenukey = {};
 
     items.forEach((item) => {
-      const { menukey, menuname, tblkey, tblname, qty, readyqty, balance, salesdate, salesseq, menuseq } =
-        item;
+      const {
+        menukey,
+        menuname,
+        tblkey,
+        tblname,
+        qty,
+        readyqty,
+        balance,
+        salesdate,
+        salesseq,
+        menuseq,
+      } = item;
 
       if (!groupedByMenukey[menukey]) {
         groupedByMenukey[menukey] = {
@@ -214,29 +258,31 @@ export const useDashboardStore = defineStore("dashboard", () => {
   const updateOrderQty = async (id, payload) => {
     console.log("id", id);
     console.log("payload", payload);
-  
+
     const requestBody = {
       detailorder: payload?.map((p) => ({
         salesdate: p?.date,
         salesseq: p?.sales_sequence,
         menuseq: p?.menu_sequence,
         qtyready: p?.qty_done,
-      }))
+      })),
     };
-  
+
     try {
-      const response = await fetch("http://192.168.1.55:8081/apporder/api/updatecheckerall", {
-        method: "POST",
-        body: JSON.stringify(requestBody)
-      });
-  
+      const response = await fetch(
+        "http://192.168.1.55:8081/apporder/api/updatecheckerall",
+        {
+          method: "POST",
+          body: JSON.stringify(requestBody),
+        }
+      );
+
       const data = await response.json();
       console.log(data);
     } catch (error) {
       console.error("Error:", error);
     }
   };
-  
 
   return {
     orders,

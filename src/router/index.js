@@ -11,7 +11,10 @@ const routes = [
         path: '/',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/DashboardView.vue'),
-        meta: { requiresAuth: true },
+        meta: { 
+          title: 'KDS',
+          requiresAuth: true
+         },
       },
       {
         path: 'kitchen-display',
@@ -26,7 +29,10 @@ const routes = [
         path: 'item-detail/:id',
         name: 'ItemDetail',
         component: () => import('@/views/dashboard/ItemDetailView.vue'),
-        meta: { requiresAuth: true  },
+        meta: { 
+          title: 'KDS Item Detail',
+          requiresAuth: true
+         },
         props: true,
         
       }
@@ -55,19 +61,24 @@ const router = createRouter({
   routes,
 });
 
+// router.beforeEach((to, from, next) => {
+//   const publicPages = ['/login'];
+//   const authRequired = to.matched.some(record => record.meta.requiresAuth);
+//   const loggedIn = localStorage.getItem('user');
+
+//   if (authRequired && !loggedIn) {
+//     return next('/login');
+//   }
+//   if (publicPages.includes(to.path) && loggedIn) {
+//     return next('/');
+//   }
+
+//   next();
+// });
+
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/login'];
-  const authRequired = to.matched.some(record => record.meta.requiresAuth);
-  const loggedIn = localStorage.getItem('user');
-
-  if (authRequired && !loggedIn) {
-    return next('/login');
-  }
-  if (publicPages.includes(to.path) && loggedIn) {
-    return next('/');
-  }
-
+  document.title = `${(to.meta.title ?? 'KDS')} | Yubi POS`;
   next();
-});
+})
 
 export default router;

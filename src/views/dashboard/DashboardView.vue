@@ -65,7 +65,7 @@
 
             <div class="d-flex justify-content-between mt-2">
               <div>
-                <h6>Process</h6>
+                <h6>Not Done</h6>
               </div>
               <div>
                 <h6>37</h6>
@@ -145,9 +145,9 @@ onMounted(() => {
   }, 250)
 })
 
-// setInterval(() => {
-//   getOrders()
-// }, 10_000)
+setInterval(() => {
+  getOrders()
+}, 3_000)
 </script>
 
 <style scoped>

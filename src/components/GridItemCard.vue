@@ -34,7 +34,7 @@
         <div class="col item-card">
           <div
             class="bg-warning p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
-            <span class="text-center">Process</span>
+            <span class="text-center">Not Done</span>
             <h2>{{ item?.qty_process ?? 0 }}</h2>
           </div>
         </div>
