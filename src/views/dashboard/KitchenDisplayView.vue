@@ -40,13 +40,13 @@
         <div class="px-2 align-self-end">
           <div class="d-flex align-items-center justify-content-center">
             <img
-              src="https://randomuser.me/api/portraits/lego/7.jpg"
-              class="img-thumbnail rounded-circle mr-2"
-              style="width: 40px; height: 40px"
-              alt="" />
+              src="https://media.licdn.com/dms/image/C560BAQFif4pDDrPQnQ/company-logo_200_200/0/1660185227747?e=2147483647&v=beta&t=oRKHsVVWvKyIOAGOY9Kku-PU0AutJdbWWQsuGRw1prU"
+              class="img-thumbnail rounded-circle mr-2" style="width: 40px; height: 40px" alt="Avatar" />
             <div class="d-flex flex-column">
-              <span class="">Jamal</span>
-              <span class="">Admin</span>
+              <span>Powered By</span>
+              <a href="http://www.yubiteck.com/" class="text-decoration-none" style="color: #1c5192;">
+                <span>Yubi POS</span>
+              </a>
             </div>
           </div>
         </div>

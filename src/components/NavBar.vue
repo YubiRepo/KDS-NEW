@@ -2,7 +2,8 @@
   <div class="container-fluid py-3 border-bottom">
     <div class="row">
       <div class="col d-flex align-items-center justify-content-center">
-        <button class="btn btn-primary btn-lg rounded-1 me-2" @click="refresh()" style="background-color: #1c5192" :disabled="loading">
+        <button class="btn btn-primary btn-lg rounded-1 me-2" @click="refresh()" style="background-color: #1c5192"
+          :disabled="loading">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
             class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
@@ -26,11 +27,14 @@
       <div class="col d-flex align-items-center justify-content-center">
         <div class="px-2 align-self-end">
           <div class="d-flex align-items-center justify-content-center">
-            <img src="https://randomuser.me/api/portraits/lego/7.jpg" class="img-thumbnail rounded-circle mr-2"
-              style="width: 40px; height: 40px" alt="Avatar" />
+            <img
+              src="https://media.licdn.com/dms/image/C560BAQFif4pDDrPQnQ/company-logo_200_200/0/1660185227747?e=2147483647&v=beta&t=oRKHsVVWvKyIOAGOY9Kku-PU0AutJdbWWQsuGRw1prU"
+              class="img-thumbnail rounded-circle mr-2" style="width: 40px; height: 40px" alt="Avatar" />
             <div class="d-flex flex-column">
-              <span class="">Jamal</span>
-              <span class="">Admin</span>
+              <span>Powered By</span>
+              <a href="http://www.yubiteck.com/" class="text-decoration-none" style="color: #1c5192;">
+                <span>Yubi POS</span>
+              </a>
             </div>
           </div>
         </div>
