@@ -34,48 +34,6 @@
         </template>
       </div>
     <div>
-     
-
-      <!-- <div class="row">
-        <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-2 col-sm-12 mb-2">
-          <div class="card p-2 rounded item-card mb-3">
-            <div class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer"
-              style="background-color: #1c5192">
-              <span class="text-center text-white fw-bold">Item Name</span>
-            </div>
-
-            <div class="d-flex justify-content-between mt-2">
-              <div>
-                <h6>Order</h6>
-              </div>
-              <div>
-                <h6>37</h6>
-              </div>
-            </div>
-            <hr class="m-0">
-
-            <div class="d-flex justify-content-between mt-2">
-              <div>
-                <h6>Done</h6>
-              </div>
-              <div>
-                <h6>37</h6>
-              </div>
-            </div>
-            <hr class="m-0">
-
-            <div class="d-flex justify-content-between mt-2">
-              <div>
-                <h6>Not Done</h6>
-              </div>
-              <div>
-                <h6>37</h6>
-              </div>
-            </div>
-            <hr class="m-0">
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>

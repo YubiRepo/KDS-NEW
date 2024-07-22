@@ -1,171 +1,115 @@
 <template>
-  <div class="container-fluid py-2">
-    <div class="row">
-      <div class="col d-flex align-items-center justify-content-center">
-        <div class="btn-group gap-2">
-          <v-btn
-            prepend-icon="mdi-refresh"
-            height="40"
-            min-width="164"
-            class="bg-primary">
-            Refresh
-          </v-btn>
-          <v-btn-toggle
-          v-model="viewMode"
-          color="primary"
-        
-          rounded="0"
-          group
-        >
-          <v-btn value="1"  height="40">
-            View 1
-          </v-btn>
+  <NavBar @refresh="refresh()" />
 
-          <v-btn value="2" height="40">
-            View 2
-          </v-btn>
-
-          <v-btn value="3" height="40">
-            View 3
-          </v-btn>
-
-      
-        </v-btn-toggle>
+  <div class="container-fluid mt-4">
+    <div class="row justify-content-end">
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label for="heightSelect" class="form-label">Select Container Height:</label>
+          <select id="heightSelect" v-model="selectedHeight" class="form-select">
+            <option value="500px">500px</option>
+            <option value="600px">600px</option>
+            <option value="700px">700px</option>
+            <option value="800px">800px</option>
+            <option value="900px">900px</option>
+            <option value="1000px">1000px</option>
+            <option value="1200px">1200px</option>
+            <option value="1500px">1500px</option>
+            <option value="2000px">2000px</option>
+          </select>
         </div>
       </div>
-      <div class="col d-flex align-items-center justify-content-center">
-        <h4 class="m-0 p-0">{{ date }}</h4>
-      </div>
-      <div class="col d-flex align-items-center justify-content-center">
-        <div class="px-2 align-self-end">
-          <div class="d-flex align-items-center justify-content-center">
-            <img
-              src="https://media.licdn.com/dms/image/C560BAQFif4pDDrPQnQ/company-logo_200_200/0/1660185227747?e=2147483647&v=beta&t=oRKHsVVWvKyIOAGOY9Kku-PU0AutJdbWWQsuGRw1prU"
-              class="img-thumbnail rounded-circle mr-2" style="width: 40px; height: 40px" alt="Avatar" />
-            <div class="d-flex flex-column">
-              <span>Powered By</span>
-              <a href="http://www.yubiteck.com/" class="text-decoration-none" style="color: #1c5192;">
-                <span>Yubi POS</span>
-              </a>
-            </div>
+    </div>
+  </div>
+
+  <div class="container-fluid" ref="scrollContainer" :style="{ height: selectedHeight, overflow: 'auto' }">
+    <div class="row g-0 justify-content-center">
+      <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3 col-sm-12 mb-2 g-0 pe-3" v-for="(item, index) in items"
+        :key="index">
+        <div class="card p-2 rounded item-card mb-3">
+          <div class="d-flex flex-column justify-content-center py-3 rounded-1" style="background-color: #1c5192">
+            <h5 class="text-center text-white fw-bold">{{ item?.name }}</h5>
+          </div>
+          <div class="d-flex justify-content-between mt-2 py-2">
+            <h5>Order</h5>
+            <h5>{{ item?.qty_order }}</h5>
+          </div>
+          <hr class="m-0">
+          <div class="d-flex justify-content-between mt-2 py-2">
+            <h5>Done</h5>
+            <h5>{{ item?.qty_done }}</h5>
+          </div>
+          <hr class="m-0">
+          <div class="d-flex justify-content-between mt-2 py-2">
+            <h5>Not Done</h5>
+            <h5>{{ item?.qty_process }}</h5>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="container">
-   <div v-if="viewMode ==1">
-    <div class="row my-3">
-      <div class="row">
-        <FilterTypeGroup
-          :filters="computedFilters"
-          :selectedFilter="selectedFilter"
-          @filter-change="handleFilterChange" />
-      </div>
-    </div>
-    <div class="row">
-      <div
-        class="col-md-3 mb-2 col-lg-3 col-12"
-        v-for="(item, index) in itemStore.getItems"
-        :key="index">
-        <GridItemCard :item="item" />
-      </div>
-    </div>
-   </div>
-    <div class="row" v-if="viewMode ==2">
-      <div
-        class="col-md-3 mb-2 col-lg-3 col-12"
-        v-for="(item, index) in itemStore.getItems"
-        :key="index">
-        <ItemCard :item="item" />
-      </div>
-    </div>
-    <div class="d-flex flex-wrap justify-content-between gap-3 my-4" v-if="viewMode ==3">
-      <ItemCarTable
-        v-for="(item, index) in itemStore.getItems"
-        :key="index"
-        :item="item" />
-    </div>
-  </div>
- 
 </template>
 
 <script setup>
-import FilterTypeGroup from "@/components/FilterTypeGroup.vue";
-import GridItemCard from "@/components/GridItemCard.vue";
-import ItemCard from "@/components/ItemCard.vue";
-import ItemCarTable from "@/components/ItemCardTable.vue";
-import useItemStore from "@/store/item-store";
-import moment from "moment";
-import { computed, onMounted, ref } from "vue";
-const itemStore = useItemStore();
-const date = ref(moment().format("dddd, DD MMMM YYYY , hh:mm:ss")); 
-let viewMode = ref(1);
-function countingDate() {
+import NavBar from "../../components/NavBar.vue";
+import { ref, onMounted, nextTick } from "vue";
+import { useDashboardStore } from "../../store/dashboard-store";
+import { toast } from 'vue3-toastify';
+
+const dashboardStore = useDashboardStore();
+const items = ref([]);
+const scrollContainer = ref(null);
+const selectedHeight = ref("800px");
+
+const refresh = () => {
+  getOrders();
+  toast.success('Refresh successfully!');
+};
+
+const getOrders = async () => {
+  await dashboardStore.getOrders();
+  items.value = dashboardStore?.orders?.items;
+};
+
+const startAutoScroll = () => {
+  let scrollDirection = 0; // 1 for down, -1 for up
+  const scrollStep = 1; // Pixels to scroll each step
+  const scrollDelay = 20; // Delay between each scroll step
+
   setInterval(() => {
-    date.value = moment().format("dddd, DD MMMM YYYY , hh:mm:ss");
-  }, 1000);
-}
+    if (scrollContainer.value) {
+      scrollContainer.value.scrollTop += scrollStep * scrollDirection;
 
-onMounted(() => {
-  countingDate();
-  fetchItems();
+      // Check if we reached the bottom or top of the container
+      if (scrollContainer.value.scrollTop + scrollContainer.value.clientHeight >= (scrollContainer.value.scrollHeight - 1)) {
+        // setTimeout(() => scrollContainer.value.scrollTop = 0, 2_000);
+        scrollDirection--; // Switch to scrolling up
+      }
+
+      if (scrollContainer.value.scrollTop <= 0) {
+        scrollDirection++; // Switch to scrolling down
+      }
+
+      // console.log(scrollContainer.value.scrollTop, scrollContainer.value.clientHeight, scrollContainer.value.scrollHeight, scrollDirection)
+    }
+  }, scrollDelay);
+};
+
+onMounted(async () => {
+  await getOrders();
+  // Ensure DOM is updated with new items before starting auto scroll
+  nextTick(() => {
+    scrollContainer.value.scrollTop = 0;
+    setTimeout(() => startAutoScroll(), 1_000); // Start from the top
+  });
 });
 
-let items = ref([]);
-
-const selectedFilter = ref("all");
-
-const filteredItems = computed(() => {
-  if (selectedFilter.value === "all") {
-    return items.value;
-  } else {
-    return items.value.filter((item) => item.type === selectedFilter.value);
-  }
-});
-
-const computedFilters = computed(() => {
-  const allCount = items.value.length;
-  const dineInCount = items.value.filter(
-    (item) => item.type === "dinein",
-  ).length;
-  const takeAwayCount = items.value.filter(
-    (item) => item.type === "takeaway",
-  ).length;
-  return [
-    {label: `All ${allCount}`, value: "all"},
-    {label: `Dine in ${dineInCount}`, value: "dinein"},
-    {label: `Take Away ${takeAwayCount}`, value: "takeaway"},
-  ];
-});
-
-function handleFilterChange(selectedValue) {
-  selectedFilter.value = selectedValue;
-}
-function fetchItems() {
-  itemStore.fetchItems();
-}
+setInterval(() => getOrders(), 5_000);
 </script>
 
 <style scoped>
-.item-card {
-  /* width: 100%; */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.col.item-card {
-  padding: 2px;
-  /* width: 100%; */
-}
-.item-container {
-  flex: 1 1 calc(33.333% - 1rem);
-  /* max-width: calc(33.333% - 1rem);
-  max-height: 300px; */
-}
-
-@media (max-width: 768px) {
-  .item-container {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
+/* Optional: Add some styles to make the scrolling more noticeable */
+.container-fluid {
+  border: 1px solid transparent;
 }
 </style>

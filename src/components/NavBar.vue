@@ -15,12 +15,12 @@
       </div>
 
       <div class="col-md-4">
-        <h4 class="text-center">{{ date }}</h4>
+        <h4 class="text-center pt-2">{{ date }}</h4>
       </div>
 
       <div class="col-md-4">
         <div class="d-flex align-items-center justify-content-end">
-            <img
+          <!-- <img
               src="https://media.licdn.com/dms/image/C560BAQFif4pDDrPQnQ/company-logo_200_200/0/1660185227747?e=2147483647&v=beta&t=oRKHsVVWvKyIOAGOY9Kku-PU0AutJdbWWQsuGRw1prU"
               class="img-thumbnail rounded-circle mr-2" style="width: 40px; height: 40px" alt="Avatar" />
             <div class="d-flex flex-column">
@@ -28,8 +28,35 @@
               <a href="http://www.yubiteck.com/" class="text-decoration-none" style="color: #1c5192;">
                 <span>Yubi POS</span>
               </a>
-            </div>
+            </div> -->
+
+          <div class="btn-group">
+            <button type="button" class="btn btn-transparent dropdown-toggle" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <img
+                src="https://media.licdn.com/dms/image/C560BAQFif4pDDrPQnQ/company-logo_200_200/0/1660185227747?e=2147483647&v=beta&t=oRKHsVVWvKyIOAGOY9Kku-PU0AutJdbWWQsuGRw1prU"
+                class="rounded-circle mr-2" style="width: 40px; height: 40px" alt="Avatar" />
+              Yubi POS
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <router-link class="dropdown-item" to="/kds">Kitchen Display</router-link>
+              </li>
+              <li>
+                <router-link class="dropdown-item" to="/">Checker</router-link>
+              </li>
+              <li>
+                <router-link class="dropdown-item" to="/">Per Table</router-link>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item" href="http://www.yubiteck.com/" target="_blank">About Us</a>
+              </li>
+            </ul>
           </div>
+        </div>
       </div>
     </div>
   </div>

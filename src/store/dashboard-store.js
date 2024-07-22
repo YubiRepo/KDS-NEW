@@ -105,15 +105,16 @@ export const useDashboardStore = defineStore("dashboard", () => {
       : null;
 
     let items = response?.Item?.map((item) => {
-      console.log(
-        `item: ${item.menuname}, qty_order: ${
-          parseInt(item?.jumlah) +
-          takeAway?.reduce(
-            (acc, t) => (t?.id == item?.MenuKey ? acc + t.qty_order : 0),
-            0
-          )
-        }`
-      );
+      // console.log(
+      //   `item: ${item.menuname}, qty_order: ${
+      //     parseInt(item?.jumlah) +
+      //     takeAway?.reduce(
+      //       (acc, t) => (t?.id == item?.MenuKey ? acc + t.qty_order : 0),
+      //       0
+      //     )
+      //   }`
+      // );
+
       return {
         id: item?.MenuKey,
         name: item?.menuname,
@@ -256,8 +257,8 @@ export const useDashboardStore = defineStore("dashboard", () => {
   // };
 
   const updateOrderQty = async (id, payload) => {
-    console.log("id", id);
-    console.log("payload", payload);
+    // console.log("id", id);
+    // console.log("payload", payload);
 
     const requestBody = {
       detailorder: payload?.map((p) => ({
@@ -277,8 +278,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
         }
       );
 
-      const data = await response.json();
-      console.log(data);
+      await response.json();
     } catch (error) {
       console.error("Error:", error);
     }

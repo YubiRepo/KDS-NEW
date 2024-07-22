@@ -17,8 +17,8 @@ const routes = [
          },
       },
       {
-        path: 'kitchen-display',
-        name: 'Kitchen Display',
+        path: 'kds',
+        name: 'KitchenDisplay',
         component: () => import('@/views/dashboard/KitchenDisplayView.vue'),
         meta: { requiresAuth: true  },
         children: [
