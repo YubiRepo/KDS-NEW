@@ -149,17 +149,17 @@ function fetchItems() {
 
 <style scoped>
 .item-card {
-  width: 100%;
+  /* width: 100%; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .col.item-card {
   padding: 2px;
-  width: 100%;
+  /* width: 100%; */
 }
 .item-container {
   flex: 1 1 calc(33.333% - 1rem);
-  max-width: calc(33.333% - 1rem);
-  max-height: 300px;
+  /* max-width: calc(33.333% - 1rem);
+  max-height: 300px; */
 }
 
 @media (max-width: 768px) {

@@ -1,9 +1,8 @@
 <template>
   <NavBar @refresh="refresh()" />
 
-  <div class="container">
-    <div>
-      <div class="row my-4">
+  <div class="container-fluid">
+    <div class="row my-4">
         <div class="d-flex justify-content-center">
           <div class="btn-group btn-group-lg" role="group" aria-label="Order type toggle button group">
             <template v-for="(filter, index) in computedFilters" :key="index">
@@ -15,9 +14,9 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row g-0 justify-content-center">
         <template v-if="orders?.length > 0">
-          <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3 col-sm-12 mb-2" v-for="(item, index) in orders" :key="index">
+          <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3 col-sm-12 mb-2 g-0 pe-3" v-for="(item, index) in orders" :key="index">
             <GridItemCard :item="item" />
           </div>
         </template>
@@ -34,6 +33,8 @@
           </div>
         </template>
       </div>
+    <div>
+     
 
       <!-- <div class="row">
         <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-2 col-sm-12 mb-2">
@@ -152,13 +153,13 @@ setInterval(() => {
 
 <style scoped>
 .item-card {
-  width: 100%;
+  /* width: 100%; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .col.item-card {
   padding: 2px;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .btn-group-lg .btn {

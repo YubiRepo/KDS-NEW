@@ -139,8 +139,8 @@ export const useDashboardStore = defineStore("dashboard", () => {
     //   takeAway?.filter((item) => item?.qty_process !== 0)
     // );
 
-    const dineInFiltered = increaseQtyIfIdMatch(dineIn);
-    const takeAwayFiltered = increaseQtyIfIdMatch(takeAway);
+    const dineInFiltered = increaseQtyIfIdMatch(dineIn?.filter((item) => item?.qty_process !== 0));
+    const takeAwayFiltered = increaseQtyIfIdMatch(takeAway?.filter((item) => item?.qty_process !== 0));
 
     return {
       dine_in: dineInFiltered,

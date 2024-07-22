@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid py-3 border-bottom">
-    <div class="row">
-      <div class="col d-flex align-items-center justify-content-center">
+  <div class="container-fluid border-bottom mt-3">
+    <div class="row mb-3">
+      <div class="col-md-4">
         <button class="btn btn-primary btn-lg rounded-1 me-2" @click="refresh()" style="background-color: #1c5192"
           :disabled="loading">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -12,21 +12,14 @@
           </svg>
           {{ loading ? 'Loading...' : 'Refresh' }}
         </button>
-        <!-- <button class="btn btn-success btn-lg rounded-1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid"
-            viewBox="0 0 16 16">
-            <path
-              d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z" />
-          </svg>
-          Grid View
-        </button> -->
       </div>
-      <div class="col d-flex align-items-center justify-content-center">
-        <h4 class="m-0 p-0">{{ date }}</h4>
+
+      <div class="col-md-4">
+        <h4 class="text-center">{{ date }}</h4>
       </div>
-      <div class="col d-flex align-items-center justify-content-center">
-        <div class="px-2 align-self-end">
-          <div class="d-flex align-items-center justify-content-center">
+
+      <div class="col-md-4">
+        <div class="d-flex align-items-center justify-content-end">
             <img
               src="https://media.licdn.com/dms/image/C560BAQFif4pDDrPQnQ/company-logo_200_200/0/1660185227747?e=2147483647&v=beta&t=oRKHsVVWvKyIOAGOY9Kku-PU0AutJdbWWQsuGRw1prU"
               class="img-thumbnail rounded-circle mr-2" style="width: 40px; height: 40px" alt="Avatar" />
@@ -37,7 +30,6 @@
               </a>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>

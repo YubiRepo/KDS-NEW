@@ -1,17 +1,20 @@
 <template>
 
-  <div>
-    <!-- placeholder loading -->
-    <!-- <div class="card p-2 rounded item-card w-100 h- mb-3" aria-hidden="true">
+  <!-- <div>
+    placeholder loading
+    <div class="card p-2 rounded item-card w-100 h- mb-3" aria-hidden="true">
       <h5 class="card-title placeholder-glow">
           <span class="placeholder col-12 placeholder-lg py-4"></span>
         </h5>
         <p class="card-text placeholder-glow">
           <span class="placeholder col-12 py-5"></span>
         </p>
-    </div> -->
+    </div>
 
-    <div class="card p-2 rounded item-card mb-3" @click="goToDetail(item?.id)">
+   
+  </div> -->
+
+  <div class="card p-2 rounded item-card mb-3" @click="goToDetail(item?.id)">
       <div class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer" style="background-color: #1c5192">
         <span class="text-center text-white fw-bold">{{ item?.name }}</span>
       </div>
@@ -44,7 +47,6 @@
         <span>Dine In & Take Away</span>
       </div> -->
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -69,13 +71,13 @@ const goToDetail = (id) => {
 <style>
 /* Tambahkan CSS kustom Anda di sini */
 .item-card {
-  width: 100%;
-  max-width: 300px;
+  /* width: 100%; */
+  /* max-width: 300px; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .col.item-card {
   padding: 2px;
-  width: 100%;
+  /* width: 100%; */
 }
 </style>
