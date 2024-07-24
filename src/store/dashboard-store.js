@@ -79,8 +79,10 @@ export const useDashboardStore = defineStore("dashboard", () => {
   };
 
   const increaseQtyIfIdMatch = (data) => {
+    if (!data) return;
+
     return Object.values(
-      data.reduce((acc, item) => {
+      data?.reduce((acc, item) => {
         if (!acc[item.id]) {
           acc[item.id] = { ...item };
         } else {
@@ -104,56 +106,78 @@ export const useDashboardStore = defineStore("dashboard", () => {
       ? response?.Dine_In?.map((item) => orderTypeDTO(item, "dine_in"))?.flat()
       : null;
 
-    let items = response?.Item?.map((item) => {
-      // console.log(
-      //   `item: ${item.menuname}, qty_order: ${
-      //     parseInt(item?.jumlah) +
-      //     takeAway?.reduce(
-      //       (acc, t) => (t?.id == item?.MenuKey ? acc + t.qty_order : 0),
-      //       0
-      //     )
-      //   }`
-      // );
+    // let items = response?.Item?.map((item) => {
+    //   return {
+    //     id: item?.MenuKey,
+    //     name: item?.menuname,
+    //     qty_order: parseInt(item?.jumlah),
+    //     qty_done: parseInt(item?.jumlahready),
+    //     qty_process: parseInt(item?.jumlah) - parseInt(item?.jumlahready),
+    //     ...setOrderTypeItem(item?.MenuKey, takeAway, dineIn),
+    //   };
+    // });
 
-      return {
-        id: item?.MenuKey,
-        name: item?.menuname,
-        qty_order: parseInt(item?.jumlah),
-        qty_done: parseInt(item?.jumlahready),
-        qty_process: parseInt(item?.jumlah) - parseInt(item?.jumlahready),
-        ...setOrderTypeItem(item?.MenuKey, takeAway, dineIn),
-      };
-    });
+    const dineInFiltered = increaseQtyIfIdMatch(
+      dineIn?.filter((item) => item?.qty_process !== 0)
+    );
+    const takeAwayFiltered = increaseQtyIfIdMatch(
+      takeAway?.filter((item) => item?.qty_process !== 0)
+    );
 
-    // if (takeAway) {
-    //   items.push(...takeAway);
-    // }
+    let items = []
+    
+    if(Array.isArray(dineInFiltered)) {
+      items.push(...dineInFiltered);
+    }
 
-    // if (dineIn) {
-    //   items.push(...dineIn);
-    // }
-
-    // const dineInFiltered = increaseQtyIfIdMatch(
-    //   dineIn?.filter((item) => item?.qty_process !== 0)
-    // );
-    // const takeAwayFiltered = increaseQtyIfIdMatch(
-    //   takeAway?.filter((item) => item?.qty_process !== 0)
-    // );
-
-    const dineInFiltered = increaseQtyIfIdMatch(dineIn?.filter((item) => item?.qty_process !== 0));
-    const takeAwayFiltered = increaseQtyIfIdMatch(takeAway?.filter((item) => item?.qty_process !== 0));
+    if(Array.isArray(takeAwayFiltered)) {
+      items.push(...takeAwayFiltered);
+    }
 
     return {
       dine_in: dineInFiltered,
       take_away: takeAwayFiltered,
+      // items: items,
       items: items,
       // all_count:
       //   calculateTotalLength(response?.Dine_In) +
       //   calculateTotalLength(response?.Take_Away),
-      all_count: response?.Item?.length,
+      all_count: (dineInFiltered?.length ?? 0) + (takeAwayFiltered?.length ?? 0),
       dine_in_count: dineInFiltered?.length ?? 0,
       take_away_count: takeAwayFiltered?.length ?? 0,
     };
+  };
+
+  const getRandomPastelColorHex = () => {
+    // Generate random values for red, green, and blue components
+    const red = Math.floor(Math.random() * 128) + 127; // Range: 127 to 255
+    const green = Math.floor(Math.random() * 128) + 127; // Range: 127 to 255
+    const blue = Math.floor(Math.random() * 128) + 127; // Range: 127 to 255
+
+    // Convert the RGB values to a hexadecimal color code
+    const color = `#${((1 << 24) + (red << 16) + (green << 8) + blue)
+      .toString(16)
+      .slice(1)}`;
+    return color;
+  };
+
+  const tablesDTO = (data) => {
+    return data?.map((item) => {
+      return {
+        id: item?.tblkey,
+        name: item?.tblname,
+        color: getRandomPastelColorHex(),
+        items: item?.data?.map((d) => {
+          return {
+            id: d?.MenuKey,
+            name: d?.menuname,
+            qty_order: parseInt(d?.qty),
+            qty_done: parseInt(d?.qtyready),
+            qty_process: parseInt(d?.qty) - parseInt(d?.qtyready),
+          };
+        }),
+      };
+    });
   };
 
   const getOrders = async () => {
@@ -162,19 +186,16 @@ export const useDashboardStore = defineStore("dashboard", () => {
         // example response not found
         // {Dine_In: 'Not Found', Take_Away: 'Not Found', Item: 'Not Found'}
 
-        if (response?.Item !== "Not Found") {
-          orders.value = ordersDTO(response);
+        orders.value = ordersDTO(response);
 
-          //   tables.value = response?.Item?.map((res) => {
-          //     return {
-          //       id: res?.MenuKey,
-          //       name: res?.menuname,
-          //       qty_order: parseInt(res?.jumlah),
-          //       qty_done: parseInt(res?.jumlahready),
-          //       qty_process: parseInt(res?.selisih),
-          //       names: res?.TblName,
-          //     };
-          //   });
+        tables.value = [];
+
+        if (Array.isArray(response?.Dine_In)) {
+          tables.value.push(...tablesDTO(response?.Dine_In));
+        }
+
+        if (Array.isArray(response?.Take_Away)) {
+          tables.value.push(...tablesDTO(response?.Take_Away));
         }
       })
       .catch((error) => {
@@ -237,29 +258,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
     );
   };
 
-  // const updateOrderQty = async (id, payload) => {
-  //   console.log("id", id);
-  //   console.log("payload", payload);
-
-  //   await ApiService.post("/apporder/api/updatecheckerall", {
-  //     detailorder: payload?.map((p) => {
-  //       return {
-  //         salesdate: p?.date,
-  //         salesseq: p?.sales_sequence,
-  //         menuseq: p?.menu_sequence,
-  //         qtyready: p?.qty_done,
-  //       };
-  //     })
-  //   })
-  //   .then((response) => {
-  //     console.log(response)
-  //   })
-  // };
-
   const updateOrderQty = async (id, payload) => {
-    // console.log("id", id);
-    // console.log("payload", payload);
-
     const requestBody = {
       detailorder: payload?.map((p) => ({
         salesdate: p?.date,

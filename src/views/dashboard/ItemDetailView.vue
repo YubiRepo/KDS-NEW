@@ -118,11 +118,11 @@
 
 <script setup>
 import moment from "moment"
-import { defineProps, onMounted, ref } from "vue"
 import NavBar from "../../components/NavBar.vue"
 import { useDashboardStore } from "../../store/dashboard-store"
 import { useRouter } from "vue-router"
 import { toast } from 'vue3-toastify';
+import { onMounted, ref } from "vue"
 
 const dashboardStore = useDashboardStore()
 const router = useRouter()

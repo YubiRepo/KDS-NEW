@@ -3,20 +3,22 @@
 
   <div class="container-fluid">
     <div class="row my-4">
-        <div class="d-flex justify-content-center">
-          <div class="btn-group btn-group-lg" role="group" aria-label="Order type toggle button group">
-            <template v-for="(filter, index) in computedFilters" :key="index">
-              <input type="radio" class="btn-check" :name="`btn_radio_${index + 1}`" :id="`btn_radio_${index + 1}`"
-                autocomplete="off" :value="filter?.value" @change="handleSelectedFilter($event)"
-                :checked="filter?.value === selectedFilter">
-              <label class="btn btn-outline-primary" :for="`btn_radio_${index + 1}`">{{ filter?.label }}</label>
-            </template>
-          </div>
+      <div class="d-flex justify-content-center">
+        <div class="btn-group btn-group-lg" role="group" aria-label="Order type toggle button group">
+          <template v-for="(filter, index) in computedFilters" :key="index">
+            <input type="radio" class="btn-check" :name="`btn_radio_${index + 1}`" :id="`btn_radio_${index + 1}`"
+              autocomplete="off" :value="filter?.value" @change="handleSelectedFilter($event)"
+              :checked="filter?.value === selectedFilter">
+            <label class="btn btn-outline-primary" :for="`btn_radio_${index + 1}`">{{ filter?.label }}</label>
+          </template>
         </div>
       </div>
+    </div>
+    <Transition>
       <div class="row g-0 justify-content-center">
         <template v-if="orders?.length > 0">
-          <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3 col-sm-12 mb-2 g-0 pe-3" v-for="(item, index) in orders" :key="index">
+          <div class="col-md-6 col-lg-4 col-xl-4 col-xxl-2 col-sm-12 mb-2 g-0 pe-3" v-for="(item, index) in orders"
+            :key="index">
             <GridItemCard :item="item" />
           </div>
         </template>
@@ -33,6 +35,7 @@
           </div>
         </template>
       </div>
+    </Transition>
     <div>
     </div>
   </div>

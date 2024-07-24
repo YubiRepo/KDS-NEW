@@ -21,9 +21,18 @@ const routes = [
         name: 'KitchenDisplay',
         component: () => import('@/views/dashboard/KitchenDisplayView.vue'),
         meta: { requiresAuth: true  },
-        children: [
-     
-        ],
+      } , 
+      {
+        path: 'kitchen',
+        name: 'KitchenDisplay2',
+        component: () => import('@/views/dashboard/KitchenDisplayView.vue'),
+        meta: { requiresAuth: true  },
+      } , 
+      {
+        path: 'table',
+        name: 'TableItem',
+        component: () => import('@/views/dashboard/TableItemView.vue'),
+        meta: { requiresAuth: true  },
       } , 
       {
         path: 'item-detail/:id',

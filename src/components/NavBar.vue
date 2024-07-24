@@ -40,13 +40,13 @@
             </button>
             <ul class="dropdown-menu">
               <li>
-                <router-link class="dropdown-item" to="/kds">Kitchen Display</router-link>
+                <router-link class="dropdown-item" :class="{ 'active': $route.path === '/' }"  to="/">Checker</router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" to="/">Checker</router-link>
+                <router-link class="dropdown-item" :class="{ 'active': $route.path === '/kitchen' }" to="/kitchen">Kitchen Display</router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" to="/">Per Table</router-link>
+                <router-link class="dropdown-item" to="/table" :class="{ 'active': $route.path === '/table' }" >Per Table</router-link>
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -64,7 +64,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import moment from "moment"
-import { defineEmits } from "vue";
 
 const emit = defineEmits(['refresh'])
 const date = ref(moment().format("dddd, DD MMMM YYYY, HH:mm:ss"))
@@ -85,3 +84,9 @@ const refresh = () => {
 
 onMounted(() => countingDate())
 </script>
+
+<style scoped>
+.active {
+  background-color: #1c5192;
+}
+</style>
