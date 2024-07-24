@@ -117,7 +117,6 @@
 </template>
 
 <script setup>
-import moment from "moment"
 import NavBar from "../../components/NavBar.vue"
 import { useDashboardStore } from "../../store/dashboard-store"
 import { useRouter } from "vue-router"
@@ -143,8 +142,6 @@ const props = defineProps({
     required: true,
   },
 })
-
-const date = ref(moment().format("dddd, DD MMMM YYYY , hh:mm:ss"))
 
 const increment = (i) => {
   if (item.value.tables[i].qty_done < item.value.tables[i].qty_order) {
@@ -183,12 +180,6 @@ const submitQty = () => {
   }, 1_000)
 }
 
-const countingDate = () => {
-  setInterval(() => {
-    date.value = moment().format("dddd, DD MMMM YYYY , hh:mm:ss")
-  }, 1000)
-}
-
 const getItemDetail = async () => {
   await dashboardStore.getItemDetail()
 
@@ -208,8 +199,6 @@ const getItemDetail = async () => {
 
 onMounted(() => {
   getItemDetail()
-  console.log("ItemDetailView mounted with id:", props.id)
-  countingDate()
 })
 </script>
 

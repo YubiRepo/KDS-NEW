@@ -114,14 +114,14 @@ setInterval(() => {
 
 <style scoped>
 .item-card {
-  /* width: 100%; */
+  width: 100% !important;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.col.item-card {
+/* .col.item-card {
   padding: 2px;
-  /* width: 100%; */
-}
+  width: 100% !important;
+} */
 
 .btn-group-lg .btn {
   border-color: #1c5192 !important;

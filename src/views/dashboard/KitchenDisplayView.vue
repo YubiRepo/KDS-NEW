@@ -67,7 +67,7 @@ import { toast } from 'vue3-toastify';
 const dashboardStore = useDashboardStore();
 const items = ref([]);
 const scrollContainer = ref(null);
-const screenHeight = `${parseInt(screen.availHeight / 1.3) + 40}`;
+const screenHeight = parseInt(screen.availHeight / 1.5) + 30;
 const selectedHeight = ref(screenHeight);
 const loading = ref(false)
 

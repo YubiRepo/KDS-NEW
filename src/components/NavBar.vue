@@ -15,7 +15,7 @@
       </div>
 
       <div class="col-md-4">
-        <h4 class="text-center pt-2">{{ date }}</h4>
+        <h4 class="justify-content-center align-items-center fs-5 pt-3">{{ date }}</h4>
       </div>
 
       <div class="col-md-4">

@@ -44,6 +44,16 @@ const routes = [
          },
         props: true,
         
+      }, 
+      {
+        path: 'table-detail/:id',
+        name: 'TableDetail',
+        component: () => import('@/views/dashboard/TableDetailView.vue'),
+        meta: { 
+          title: 'KDS Table Detail',
+          requiresAuth: true
+         },
+        props: true,
       }
     ],
   },

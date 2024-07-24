@@ -4,16 +4,16 @@
     <div class="container-fluid mt-4">
         <Transition>
             <div class="row justify-content-center" v-if="tables?.length > 0">
-                <div class="col-md-6 col-lg-4 col-xl-4 col-xxl-3 col-sm-12 mb-2" v-for="(table, index) in tables"
+                <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 col-sm-12 mb-2" v-for="(table, index) in tables"
                     :key="index">
                     <div class="card rounded item-card mb-3 shadow-sm">
                         <div class="row g-0" style="height: 400px; overflow: auto;">
-                            <div class="col-2 mr-0 rounded-1" style="background-color: #1c5192">
-                                <h5 class="fw-bold text-white text-center p-2 mt-4 sticky-top">
+                            <div class="col-md-2 col-lg-2 col-xl-2 col-xxl-3 col-sm-12 rounded-1" style="background-color: #1c5192" @click="gotoDetailTable(table?.id)">
+                                <h5 class="fw-bold h-100 d-flex align-items-center justify-content-center text-white text-center sticky-top p-2 cursor-pointer">
                                     {{ table?.name }}
                                 </h5>
                             </div>
-                            <div class="col-10">
+                            <div class="col-md-10 col-lg-10 col-xl-10 col-xxl-9 col-sm-12">
                                 <div class="table-responsive" style="height: 400px; overflow-y: auto;">
                                     <table class="table table-sm table-striped table-hover mb-0" style="height: 400px; overflow-y: auto;">
                                         <thead>
@@ -70,32 +70,36 @@
 </template>
 
 <script setup>
-import NavBar from "../../components/NavBar.vue";
-import { ref, onMounted, nextTick } from "vue";
-import { useDashboardStore } from "../../store/dashboard-store";
-import { toast } from "vue3-toastify";
+import NavBar from "../../components/NavBar.vue"
+import { ref, onMounted } from "vue"
+import { useDashboardStore } from "../../store/dashboard-store"
+import { toast } from "vue3-toastify"
+import { useRouter } from "vue-router"
 
-const dashboardStore = useDashboardStore();
-const tables = ref(null);
-const loading = ref(false);
+const router = useRouter()
+const dashboardStore = useDashboardStore()
+const tables = ref(null)
+const loading = ref(false)
 
 const getOrders = async () => {
-    loading.value = true;
-    await dashboardStore.getOrders();
-    tables.value = dashboardStore.tables;
-    loading.value = false;
-};
+    loading.value = true
+    await dashboardStore.getOrders()
+    tables.value = dashboardStore.tables
+    loading.value = false
+}
 
 const refresh = () => {
-    getOrders();
-    toast.success("Refresh successfully!");
-};
+    getOrders()
+    toast.success("Refresh successfully!")
+}
 
-onMounted(async () => {
-    await getOrders();
-});
+const gotoDetailTable = (id) => {
+    router.push({ name: "TableDetail", params: { id: id } })
+}
 
-setInterval(() => getOrders(), 3_000);
+onMounted(async () => await getOrders())
+
+setInterval(() => getOrders(), 3_000)
 </script>
 
 <style scoped>
