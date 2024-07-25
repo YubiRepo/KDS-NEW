@@ -43,10 +43,10 @@
                 <router-link class="dropdown-item" :class="{ 'active': $route.path === '/' }"  to="/">Checker</router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" :class="{ 'active': $route.path === '/kitchen' }" to="/kitchen">Kitchen Display</router-link>
+                <router-link class="dropdown-item" to="/table" :class="{ 'active': $route.path === '/table' }" >Per Table</router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" to="/table" :class="{ 'active': $route.path === '/table' }" >Per Table</router-link>
+                <router-link class="dropdown-item" :class="{ 'active': $route.path === '/kitchen' }" to="/kitchen">Kitchen Display</router-link>
               </li>
               <li>
                 <hr class="dropdown-divider">

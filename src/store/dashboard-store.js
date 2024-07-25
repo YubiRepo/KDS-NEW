@@ -124,13 +124,13 @@ export const useDashboardStore = defineStore("dashboard", () => {
       takeAway?.filter((item) => item?.qty_process !== 0)
     );
 
-    let items = []
-    
-    if(Array.isArray(dineInFiltered)) {
+    let items = [];
+
+    if (Array.isArray(dineInFiltered)) {
       items.push(...dineInFiltered);
     }
 
-    if(Array.isArray(takeAwayFiltered)) {
+    if (Array.isArray(takeAwayFiltered)) {
       items.push(...takeAwayFiltered);
     }
 
@@ -142,7 +142,8 @@ export const useDashboardStore = defineStore("dashboard", () => {
       // all_count:
       //   calculateTotalLength(response?.Dine_In) +
       //   calculateTotalLength(response?.Take_Away),
-      all_count: (dineInFiltered?.length ?? 0) + (takeAwayFiltered?.length ?? 0),
+      all_count:
+        (dineInFiltered?.length ?? 0) + (takeAwayFiltered?.length ?? 0),
       dine_in_count: dineInFiltered?.length ?? 0,
       take_away_count: takeAwayFiltered?.length ?? 0,
     };
@@ -167,10 +168,13 @@ export const useDashboardStore = defineStore("dashboard", () => {
         id: item?.tblkey,
         name: item?.tblname,
         color: getRandomPastelColorHex(),
+        sales_date: item?.salesdate,
+        sales_sequence: item?.salesseq,
         items: item?.data?.map((d) => {
           return {
             id: d?.MenuKey,
             name: d?.menuname,
+            menu_sequence: d?.menuseq,
             qty_order: parseInt(d?.qty),
             qty_done: parseInt(d?.qtyready),
             qty_process: parseInt(d?.qty) - parseInt(d?.qtyready),
@@ -258,8 +262,24 @@ export const useDashboardStore = defineStore("dashboard", () => {
     );
   };
 
+  const updateOrder = async (body) => {
+    try {
+      const response = await fetch(
+        "http://192.168.1.55:8081/apporder/api/updatecheckerall",
+        {
+          method: "POST",
+          body: JSON.stringify(body),
+        }
+      );
+
+      await response.json();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   const updateOrderQty = async (id, payload) => {
-    const requestBody = {
+    const body = {
       detailorder: payload?.map((p) => ({
         salesdate: p?.date,
         salesseq: p?.sales_sequence,
@@ -268,19 +288,20 @@ export const useDashboardStore = defineStore("dashboard", () => {
       })),
     };
 
-    try {
-      const response = await fetch(
-        "http://192.168.1.55:8081/apporder/api/updatecheckerall",
-        {
-          method: "POST",
-          body: JSON.stringify(requestBody),
-        }
-      );
+    await updateOrder(body);
+  };
 
-      await response.json();
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const updateByTable = async (id, payload) => {
+    const body = {
+      detailorder: payload?.items?.map((p) => ({
+        salesdate: payload?.sales_date,
+        salesseq: payload?.sales_sequence,
+        menuseq: p?.menu_sequence,
+        qtyready: p?.qty_done,
+      })),
+    };
+
+    await updateOrder(body);
   };
 
   return {
@@ -291,6 +312,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
     getItemDetail,
     updateOrderQty,
     detail_items,
+    updateByTable,
   };
 });
 

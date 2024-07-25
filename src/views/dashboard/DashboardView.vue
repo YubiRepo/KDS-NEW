@@ -109,7 +109,7 @@ onMounted(() => {
 
 setInterval(() => {
   getOrders()
-}, 3_000)
+}, 5_000)
 </script>
 
 <style scoped>

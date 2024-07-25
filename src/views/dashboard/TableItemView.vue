@@ -84,7 +84,7 @@ const loading = ref(false)
 const getOrders = async () => {
     loading.value = true
     await dashboardStore.getOrders()
-    tables.value = dashboardStore.tables
+    tables.value = dashboardStore.tables?.sort((a, b) => a.sales_sequence - b.sales_sequence);
     loading.value = false
 }
 
@@ -99,7 +99,7 @@ const gotoDetailTable = (id) => {
 
 onMounted(async () => await getOrders())
 
-setInterval(() => getOrders(), 3_000)
+setInterval(() => getOrders(), 5_000)
 </script>
 
 <style scoped>

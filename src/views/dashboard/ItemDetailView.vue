@@ -3,7 +3,7 @@
 
   <div class="container-fluid mt-4" v-if="item?.name">
     <div class="row g-0 justify-content-center">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <button class="btn btn-secondary btn-lg rounded-1" @click="this.$router.back()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
             viewBox="0 0 16 16">
@@ -14,7 +14,7 @@
         </button>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="card p-2 rounded item-card mb-3 mx-5">
           <div class="d-flex flex-column justify-content-center py-3 rounded" style="background-color: #1c5192">
             <span class="text-center text-white fw-bold">
@@ -48,7 +48,7 @@
         </div>
       </div>
 
-      <div class="col-md-4 justify-content-end">
+      <div class="col-md-3 justify-content-end">
         <div class="d-flex align-items-center justify-content-end">
           <button class="btn btn-lg text-white rounded-1" style="background-color: #1c5192" @click="submitQty()"
             :disabled="loadingSubmit">
