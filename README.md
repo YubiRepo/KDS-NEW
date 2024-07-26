@@ -27,7 +27,7 @@
 ## Setup
 1. Clone the repository
 
-  ```sh
+  ```bash
   git clone https://github.com/YubiRepo/KDS-NEW.git
   ```
 2. CD into `KDS-NEW`
