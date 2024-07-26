@@ -41,7 +41,7 @@
               <div
                 class="bg-warning p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
                 <span class="text-center">Not Done</span>
-                <h2>{{ item?.qty_process ?? 0 }}</h2>
+                <h2>{{ item?.qty_not_done ?? 0 }}</h2>
               </div>
             </div>
           </div>
@@ -97,8 +97,8 @@
                 </span>
               </div>
             </td>
-            <td>{{ t?.qty_process }}</td>
-            <!-- ({{ t?.qty_process - t?.qty_done }}) -->
+            <td>{{ t?.qty_not_done }}</td>
+            <!-- ({{ t?.qty_not_done - t?.qty_done }}) -->
           </tr>
         </tbody>
       </table>
@@ -132,7 +132,7 @@ const item = ref({
   name: "",
   qty_order: 0,
   qty_done: 0,
-  qty_process: 0,
+  qty_not_done: 0,
   tables: []
 })
 
@@ -146,20 +146,20 @@ const props = defineProps({
 const increment = (i) => {
   if (item.value.tables[i].qty_done < item.value.tables[i].qty_order) {
     item.value.qty_done++
-    item.value.qty_process--
+    item.value.qty_not_done--
 
     item.value.tables[i].qty_done++
-    item.value.tables[i].qty_process--
+    item.value.tables[i].qty_not_done--
   }
 }
 
 const decrement = (i) => {
   if (item.value.tables[i].qty_done > 0) {
     item.value.qty_done--
-    item.value.qty_process++
+    item.value.qty_not_done++
 
     item.value.tables[i].qty_done--
-    item.value.tables[i].qty_process++
+    item.value.tables[i].qty_not_done++
   }
 }
 
@@ -192,7 +192,7 @@ const getItemDetail = async () => {
   item.value.tables = sameItem?.tables
   item.value.qty_order = qtyOrder
   item.value.qty_done = qtyDone
-  item.value.qty_process = qtyOrder - qtyDone
+  item.value.qty_not_done = qtyOrder - qtyDone
 
   console.log(item.value, sameItem)
 }

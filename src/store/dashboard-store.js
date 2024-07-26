@@ -28,7 +28,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
         name: d?.menuname,
         qty_order: parseInt(d?.qty),
         qty_done: parseInt(d?.qtyready),
-        qty_process: parseInt(d?.qty) - parseInt(d?.qtyready),
+        qty_not_done: parseInt(d?.qty) - parseInt(d?.qtyready),
         date: items?.salesdate,
         sales_sequence: items?.salesseq,
         menu_sequence: d?.menuseq,
@@ -88,7 +88,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
         } else {
           acc[item.id].qty_order += item.qty_order;
           acc[item.id].qty_done += item.qty_done;
-          acc[item.id].qty_process += item.qty_process;
+          acc[item.id].qty_not_done += item.qty_not_done;
         }
         return acc;
       }, {})
@@ -112,16 +112,16 @@ export const useDashboardStore = defineStore("dashboard", () => {
     //     name: item?.menuname,
     //     qty_order: parseInt(item?.jumlah),
     //     qty_done: parseInt(item?.jumlahready),
-    //     qty_process: parseInt(item?.jumlah) - parseInt(item?.jumlahready),
+    //     qty_not_done: parseInt(item?.jumlah) - parseInt(item?.jumlahready),
     //     ...setOrderTypeItem(item?.MenuKey, takeAway, dineIn),
     //   };
     // });
 
     const dineInFiltered = increaseQtyIfIdMatch(
-      dineIn?.filter((item) => item?.qty_process !== 0)
+      dineIn?.filter((item) => item?.qty_not_done !== 0)
     );
     const takeAwayFiltered = increaseQtyIfIdMatch(
-      takeAway?.filter((item) => item?.qty_process !== 0)
+      takeAway?.filter((item) => item?.qty_not_done !== 0)
     );
 
     let items = [];
@@ -177,7 +177,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
             menu_sequence: d?.menuseq,
             qty_order: parseInt(d?.qty),
             qty_done: parseInt(d?.qtyready),
-            qty_process: parseInt(d?.qty) - parseInt(d?.qtyready),
+            qty_not_done: parseInt(d?.qty) - parseInt(d?.qtyready),
           };
         }),
       };
@@ -238,7 +238,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
         name: tblname,
         qty_order: parseInt(qty),
         qty_done: parseInt(readyqty),
-        qty_process: parseInt(balance),
+        qty_not_done: parseInt(balance),
         date: salesdate,
         sales_sequence: salesseq,
         menu_sequence: menuseq,

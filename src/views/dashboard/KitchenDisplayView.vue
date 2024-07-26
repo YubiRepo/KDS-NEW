@@ -36,7 +36,7 @@
             <hr class="m-0">
             <div class="d-flex justify-content-between mt-2 py-2">
               <h5 class="fw-bold">Not Done</h5>
-              <h5 class="fw-bold">{{ item?.qty_process }}</h5>
+              <h5 class="fw-bold">{{ item?.qty_not_done }}</h5>
             </div>
           </div>
         </div>

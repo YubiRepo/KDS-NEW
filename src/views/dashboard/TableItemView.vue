@@ -41,7 +41,7 @@
                                                 </td>
                                                 <td class="bg-warning">
                                                     <p class="mb-2 fw-bold text-right">
-                                                        {{ item?.qty_process }}
+                                                        {{ item?.qty_not_done }}
                                                     </p>
                                                 </td>
                                             </tr>

@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid border-bottom mt-3">
     <div class="row mb-3">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <button class="btn btn-primary btn-lg rounded-1 me-2" @click="refresh()" style="background-color: #1c5192"
           :disabled="loading">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -14,22 +14,12 @@
         </button>
       </div>
 
-      <div class="col-md-4">
-        <h4 class="justify-content-center align-items-center fs-5 pt-3">{{ date }}</h4>
+      <div class="col-md-6">
+        <h4 class="fs-4 pt-3 text-center">{{ date }}</h4>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="d-flex align-items-center justify-content-end">
-          <!-- <img
-              src="https://media.licdn.com/dms/image/C560BAQFif4pDDrPQnQ/company-logo_200_200/0/1660185227747?e=2147483647&v=beta&t=oRKHsVVWvKyIOAGOY9Kku-PU0AutJdbWWQsuGRw1prU"
-              class="img-thumbnail rounded-circle mr-2" style="width: 40px; height: 40px" alt="Avatar" />
-            <div class="d-flex flex-column">
-              <span>Powered By</span>
-              <a href="http://www.yubiteck.com/" class="text-decoration-none" style="color: #1c5192;">
-                <span>Yubi POS</span>
-              </a>
-            </div> -->
-
           <div class="btn-group">
             <button type="button" class="btn btn-transparent dropdown-toggle" data-bs-toggle="dropdown"
               aria-expanded="false">
