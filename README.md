@@ -62,3 +62,16 @@
    
 <h2 id="production-setup">Production Setup</h2>
 
+1. Build for production
+
+```sh
+npm run build
+```
+
+2. Testing the build (optional)
+```sh
+npm run preview
+```
+
+3. Copy all folder & files in `dist` directory into server
+
