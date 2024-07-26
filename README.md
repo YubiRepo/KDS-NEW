@@ -20,9 +20,9 @@
 <h2 id="what-inside">What's inside?</h2>
 
 1. [Vue v3.x](https://vuejs.org/)
-2. [Pinia](https://pinia.vuejs.org/)
+2. [Pinia v1.x](https://pinia.vuejs.org/)
 3. [Bootstrap v5.x](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
-4. [Axios](https://axios-http.com/docs/intro)
+4. [Axios v1.x](https://axios-http.com/docs/intro)
 
 ## Setup
 1. Clone the repository
