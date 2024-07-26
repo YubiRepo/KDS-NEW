@@ -14,15 +14,15 @@
 4. [Production Setup](#production-setup)
 
 ## Requirements
-1. NodeJS ^v20.x
-2. NPM ^10.x
+
+[NodeJS v20.x](https://nodejs.org/en)
 
 <h2 id="what-inside">What's inside?</h2>
 
-1. Vue 3
-2. Pinia
-3. Bootstrap 5
-4. Axios
+1. [Vue v3.x](https://vuejs.org/)
+2. [Pinia](https://pinia.vuejs.org/)
+3. [Bootstrap v5.x](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
+4. [Axios](https://axios-http.com/docs/intro)
 
 ## Setup
 1. Clone the repository
