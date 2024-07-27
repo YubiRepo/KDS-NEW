@@ -33,6 +33,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
         sales_sequence: items?.salesseq,
         menu_sequence: d?.menuseq,
         type: type,
+        time: items?.lama == "" ? 'Baru dipesan' : items?.lama,
       };
     });
   };
@@ -81,18 +82,20 @@ export const useDashboardStore = defineStore("dashboard", () => {
   const increaseQtyIfIdMatch = (data) => {
     if (!data) return;
 
-    return Object.values(
-      data?.reduce((acc, item) => {
-        if (!acc[item.id]) {
-          acc[item.id] = { ...item };
-        } else {
-          acc[item.id].qty_order += item.qty_order;
-          acc[item.id].qty_done += item.qty_done;
-          acc[item.id].qty_not_done += item.qty_not_done;
-        }
-        return acc;
-      }, {})
-    );
+    // return Object.values(
+    //   data?.reduce((acc, item) => {
+    //     if (!acc[item.id]) {
+    //       acc[item.id] = { ...item };
+    //     } else {
+    //       acc[item.id].qty_order += item.qty_order;
+    //       acc[item.id].qty_done += item.qty_done;
+    //       acc[item.id].qty_not_done += item.qty_not_done;
+    //     }
+    //     return acc;
+    //   }, {})
+    // );
+
+    return data;
   };
 
   const ordersDTO = (response) => {
@@ -138,7 +141,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
       dine_in: dineInFiltered,
       take_away: takeAwayFiltered,
       // items: items,
-      items: items,
+      items: items?.sort((a, b) => a.sales_sequence - b.sales_sequence),
       // all_count:
       //   calculateTotalLength(response?.Dine_In) +
       //   calculateTotalLength(response?.Take_Away),

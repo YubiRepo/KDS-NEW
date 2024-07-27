@@ -9,7 +9,7 @@
                     <div class="card rounded item-card mb-3 shadow-sm">
                         <div class="row g-0" style="height: 400px; overflow: auto;">
                             <div class="col-md-2 col-lg-2 col-xl-2 col-xxl-3 col-sm-12 rounded-1" style="background-color: #1c5192" @click="gotoDetailTable(table?.id)">
-                                <h5 class="fw-bold h-100 d-flex align-items-center justify-content-center text-white text-center sticky-top p-2 cursor-pointer">
+                                <h5 class="fw-bold h-100 d-flex align-items-center justify-content-center text-white text-center p-2 cursor-pointer">
                                     {{ table?.name }}
                                 </h5>
                             </div>
@@ -107,6 +107,6 @@ setInterval(() => getOrders(), 5_000)
     position: sticky;
     top: 0;
     background-color: white;
-    z-index: 10;
+    z-index: 8;
 }
 </style>

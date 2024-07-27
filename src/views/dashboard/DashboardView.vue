@@ -1,8 +1,6 @@
 <template>
-  <NavBar @refresh="refresh()" />
-
-  <div class="container-fluid">
-    <div class="row my-4">
+  <NavBar @refresh="refresh()" >
+    <div class="row mb-4 mt-0 bg-white">
       <div class="d-flex justify-content-center">
         <div class="btn-group btn-group-lg" role="group" aria-label="Order type toggle button group">
           <template v-for="(filter, index) in computedFilters" :key="index">
@@ -14,6 +12,9 @@
         </div>
       </div>
     </div>
+  </NavBar> 
+
+  <div class="container-fluid mt-4">
     <Transition>
       <div class="row g-0 justify-content-center">
         <template v-if="orders?.length > 0">

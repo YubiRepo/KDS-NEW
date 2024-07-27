@@ -1,5 +1,12 @@
 <template>
-  <div class="card p-2 rounded item-card mb-3" @click="goToDetail(item?.id)">
+  <div class="card pb-1 ps-2 pl-0 m-0" style="max-width: 10rem; border-bottom: none; border-bottom-left-radius: 0; border-bottom-right-radius: 0;" >
+    <h5 class="text-left p-0 m-0 fs-5">
+      <span class="fw-bold">#{{ item?.sales_sequence }}</span>: 
+      <span class="fs-6">{{ item?.time }}</span>
+    </h5>
+  </div>
+
+  <div class="card p-2 rounded item-card mb-3" @click="goToDetail(item?.id)" style="border-top-left-radius: 0 !important;">
     <div v-if="item?.name?.length > 30" class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer"
       style="background-color: #1c5192; overflow: hidden; white-space: nowrap;" data-bs-toggle="tooltip"
       data-bs-placement="top" :data-bs-title="item?.name" data-bs-custom-class="custom-tooltip">
@@ -9,8 +16,7 @@
 
     <div v-else class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer"
       style="background-color: #1c5192;">
-      <span class="text-center text-white fw-bold">{{ item?.name
-        }}</span>
+      <span class="text-center text-white fw-bold">{{ item?.name }}</span>
     </div>
 
     <hr class="mb-1 mt-2 mx-2">
@@ -65,9 +71,7 @@ onMounted(() => {
   tooltipList.value = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
 })
 
-onBeforeUnmount(() => {
-  tooltipList?.value?.forEach(tooltip => tooltip.dispose())
-})
+onBeforeUnmount(() => tooltipList?.value?.forEach(tooltip => tooltip.dispose()))
 </script>
 
 
@@ -106,5 +110,9 @@ onBeforeUnmount(() => {
   --bs-tooltip-padding-x: 1rem;
   --bs-tooltip-padding-y: 0.5rem;
   --bs-tooltip-border-radius: 0.2rem;
+  --bs-tooltip-arrow-width: 0.8rem;
+  --bs-tooltip-arrow-height: 0.4rem;
+  --bs-tooltip-arrow-border-width: 0.5rem;
+  --bs-tooltip-arrow-color: var(--bs-tooltip-bg);
 }
 </style>

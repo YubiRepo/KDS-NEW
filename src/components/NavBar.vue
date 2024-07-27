@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid border-bottom mt-3">
+  <div class="container-fluid border-bottom sticky-top bg-white shadow-sm" style="z-index: 13;">
     <div class="row mb-3">
-      <div class="col-md-3">
+      <div class="col-md-3 mt-3">
         <button class="btn btn-primary btn-lg rounded-1 me-2" @click="refresh()" style="background-color: #1c5192"
           :disabled="loading">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -14,11 +14,11 @@
         </button>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-6 mt-3">
         <h4 class="fs-4 pt-3 text-center">{{ date }}</h4>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-3 mt-3">
         <div class="d-flex align-items-center justify-content-end">
           <div class="btn-group">
             <button type="button" class="btn btn-transparent dropdown-toggle" data-bs-toggle="dropdown"
@@ -28,7 +28,7 @@
                 class="rounded-circle mr-2" style="width: 40px; height: 40px" alt="Avatar" />
               Yubi POS
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" style="z-index: 100;">
               <li>
                 <router-link class="dropdown-item" :class="{ 'active': $route.path === '/' }"  to="/">Checker</router-link>
               </li>
@@ -49,6 +49,7 @@
         </div>
       </div>
     </div>
+    <slot/>
   </div>
 </template>
 <script setup>
