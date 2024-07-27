@@ -17,12 +17,12 @@
   <Transition>
     <div class="container-fluid" ref="scrollContainer" :style="{ height: `${selectedHeight}px`, overflow: 'auto' }">
       <div class="row justify-content-center mt-2" v-if="items?.length > 0">
-        <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-2 col-sm-12 mb-2" v-for="(item, index) in items"
-          :key="index">
+        <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-2 col-sm-12 mb-2" v-for="(item, index) in items" :key="index">
           <div class="card p-2 rounded item-card mb-3">
-            <div class="d-flex flex-column justify-content-center pt-3 pb-2 rounded-1"
-              style="background-color: #1c5192">
-              <h5 class="text-center text-white fw-bold">{{ item?.name }}</h5>
+            <div class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer"
+              style="background-color: #1c5192; overflow: hidden; white-space: nowrap;">
+              <span class="text-center text-white fw-bold" :class="{ 'marquee': item?.name?.length >= 25 }">{{ item?.name
+                }}</span>
             </div>
             <div class="d-flex justify-content-between mt-2 py-2">
               <h5 class="fw-bold">Order</h5>

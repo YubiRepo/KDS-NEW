@@ -1,56 +1,49 @@
 <template>
-
-  <!-- <div>
-    placeholder loading
-    <div class="card p-2 rounded item-card w-100 h- mb-3" aria-hidden="true">
-      <h5 class="card-title placeholder-glow">
-          <span class="placeholder col-12 placeholder-lg py-4"></span>
-        </h5>
-        <p class="card-text placeholder-glow">
-          <span class="placeholder col-12 py-5"></span>
-        </p>
-    </div>
-
-   
-  </div> -->
-
   <div class="card p-2 rounded item-card mb-3" @click="goToDetail(item?.id)">
-      <div class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer" style="background-color: #1c5192">
-        <span class="text-center text-white fw-bold">{{ item?.name }}</span>
-      </div>
-      <hr class="mb-1 mt-2 mx-2">
-      <div class="row py-1 px-3">
-        <div class="col item-card">
-          <div
-            class="bg-primary p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
-            <span>Order</span>
-            <h2>{{ item?.qty_order ?? 0 }}</h2>
-          </div>
-        </div>
-        <div class="col item-card">
-          <div
-            class="bg-success p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
-            <span>Done</span>
-            <h2>{{ item?.qty_done ?? 0 }}</h2>
-          </div>
-        </div>
-        <div class="col item-card">
-          <div
-            class="bg-warning p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
-            <span class="text-center">Not Done</span>
-            <h2>{{ item?.qty_not_done ?? 0 }}</h2>
-          </div>
-        </div>
-      </div>
-
-      <!-- <div class="card-footer mt-1 pt-1 px-0 pb-2 text-center text-white rounded-1" style="background-color: #1c5192" v-if="item?.type == 'dine_in_take_away'">
-        <span>Dine In & Take Away</span>
-      </div> -->
+    <div v-if="item?.name?.length > 30" class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer"
+      style="background-color: #1c5192; overflow: hidden; white-space: nowrap;" data-bs-toggle="tooltip"
+      data-bs-placement="top" :data-bs-title="item?.name" data-bs-custom-class="custom-tooltip">
+      <span class="text-center text-white fw-bold marquee">{{ item?.name
+        }}</span>
     </div>
+
+    <div v-else class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer"
+      style="background-color: #1c5192;">
+      <span class="text-center text-white fw-bold">{{ item?.name
+        }}</span>
+    </div>
+
+    <hr class="mb-1 mt-2 mx-2">
+    <div class="row py-1 px-3">
+      <div class="col item-card">
+        <div
+          class="bg-primary p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
+          <span>Order</span>
+          <h2>{{ item?.qty_order ?? 0 }}</h2>
+        </div>
+      </div>
+      <div class="col item-card">
+        <div
+          class="bg-success p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
+          <span>Done</span>
+          <h2>{{ item?.qty_done ?? 0 }}</h2>
+        </div>
+      </div>
+      <div class="col item-card">
+        <div
+          class="bg-warning p-2 text-white d-flex flex-column justify-content-center rounded align-items-center h-100">
+          <span class="text-center">Not Done</span>
+          <h2>{{ item?.qty_not_done ?? 0 }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { Tooltip } from 'bootstrap';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
 
 const router = useRouter();
 
@@ -61,9 +54,20 @@ const props = defineProps({
   },
 });
 
+const tooltipList = ref([]);
+
 const goToDetail = (id) => {
   router.push({ name: "ItemDetail", params: { id: id } });
 }
+
+onMounted(() => {
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  tooltipList.value = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
+})
+
+onBeforeUnmount(() => {
+  tooltipList?.value?.forEach(tooltip => tooltip.dispose())
+})
 </script>
 
 
@@ -78,5 +82,29 @@ const goToDetail = (id) => {
 .col.item-card {
   padding: 2px;
   /* width: 100%; */
+}
+
+.marquee {
+  display: inline-block;
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.custom-tooltip {
+  --bs-tooltip-bg: #1c5192;
+  --bs-tooltip-color: white;
+  --bs-tooltip-max-width: 300px;
+  --bs-tooltip-padding-x: 1rem;
+  --bs-tooltip-padding-y: 0.5rem;
+  --bs-tooltip-border-radius: 0.2rem;
 }
 </style>
