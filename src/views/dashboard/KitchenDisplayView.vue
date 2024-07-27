@@ -19,11 +19,24 @@
       <div class="row justify-content-center mt-2" v-if="items?.length > 0">
         <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-2 col-sm-12 mb-2" v-for="(item, index) in items" :key="index">
           <div class="card p-2 rounded item-card mb-3">
-            <div class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer"
+
+            <div v-if="item?.name?.length >= 25" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="item?.name"
+              data-bs-custom-class="custom-tooltip"
+              class="d-flex flex-column justify-content-center py-3 rounded"
               style="background-color: #1c5192; overflow: hidden; white-space: nowrap;">
-              <span class="text-center text-white fw-bold" :class="{ 'marquee': item?.name?.length >= 25 }">{{ item?.name
+              <span class="text-center text-white fw-bold marquee">{{
+                item?.name
                 }}</span>
             </div>
+
+            <div v-else
+              class="d-flex flex-column justify-content-center py-3 rounded"
+              style="background-color: #1c5192; ">
+              <span class="text-center text-white fw-bold">{{
+                item?.name
+                }}</span>
+            </div>
+
             <div class="d-flex justify-content-between mt-2 py-2">
               <h5 class="fw-bold">Order</h5>
               <h5 class="fw-bold">{{ item?.qty_order }}</h5>
@@ -60,9 +73,10 @@
 
 <script setup>
 import NavBar from "../../components/NavBar.vue";
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { useDashboardStore } from "../../store/dashboard-store";
 import { toast } from 'vue3-toastify';
+import { Tooltip } from "bootstrap";
 
 const dashboardStore = useDashboardStore();
 const items = ref([]);
@@ -70,6 +84,7 @@ const scrollContainer = ref(null);
 const screenHeight = parseInt(screen.availHeight / 1.5) + 30;
 const selectedHeight = ref(screenHeight);
 const loading = ref(false)
+const tooltipList = ref([]);
 
 const selectedHeights = [
   screenHeight,
@@ -127,6 +142,8 @@ onMounted(async () => {
   // Ensure DOM is updated with new items before starting auto scroll
   nextTick(() => {
     scrollContainer.value.scrollTop = 0;
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    tooltipList.value = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
     setTimeout(() => startAutoScroll(), 1_000); // Start from the top
   })
 
@@ -134,18 +151,36 @@ onMounted(async () => {
 
 });
 
+onBeforeUnmount(() => tooltipList?.value?.forEach(tooltip => tooltip.dispose()))
+
 setInterval(() => getOrders(), 5_000);
 </script>
 
 <style>
-/* we will explain what these classes do next! */
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
+.marquee {
+  display: inline-block;
+  animation: marquee 10s linear infinite;
 }
 
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
 }
-</style>
+
+.custom-tooltip {
+  --bs-tooltip-bg: #1c5192;
+  --bs-tooltip-color: white;
+  --bs-tooltip-max-width: 300px;
+  --bs-tooltip-padding-x: 1rem;
+  --bs-tooltip-padding-y: 0.5rem;
+  --bs-tooltip-border-radius: 0.2rem;
+  --bs-tooltip-arrow-width: 0.8rem;
+  --bs-tooltip-arrow-height: 0.4rem;
+  --bs-tooltip-arrow-border-width: 0.5rem;
+  --bs-tooltip-arrow-color: var(--bs-tooltip-bg);
+}</style>

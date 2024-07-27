@@ -21,6 +21,20 @@ export const useDashboardStore = defineStore("dashboard", () => {
 
   const detail_items = ref(null);
 
+  const replaceTimeUnits = (text) => {
+    if(text == "") return 'a seconds ago';
+
+    let newText = ''
+
+    if (text.includes("Jam") || text.includes("Menit")) {
+      newText = text.replace("Jam", "hour").replace("Menit", "minute");
+    } else {
+      newText = text + " minute";
+    }
+
+    return newText + " ago";
+  }
+
   const orderTypeDTO = (items, type) => {
     return items?.data?.map((d) => {
       return {
@@ -33,7 +47,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
         sales_sequence: items?.salesseq,
         menu_sequence: d?.menuseq,
         type: type,
-        time: items?.lama == "" ? 'Baru dipesan' : items?.lama,
+        time: replaceTimeUnits(items?.lama),
       };
     });
   };
@@ -173,6 +187,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
         color: getRandomPastelColorHex(),
         sales_date: item?.salesdate,
         sales_sequence: item?.salesseq,
+        time: replaceTimeUnits(item?.lama),
         items: item?.data?.map((d) => {
           return {
             id: d?.MenuKey,
