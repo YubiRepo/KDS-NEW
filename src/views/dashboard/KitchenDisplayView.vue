@@ -3,7 +3,7 @@
 
   <div class="container-fluid mt-4">
     <div class="row justify-content-end">
-      <div class="col-md-4">
+      <div class="col-md-2">
         <div class="mb-3">
           <label for="heightSelect" class="form-label">Select Display Height:</label>
           <select id="heightSelect" v-model="selectedHeight" class="form-select">
@@ -20,7 +20,7 @@
         <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-2 col-sm-12 mb-2" v-for="(item, index) in items" :key="index">
           <div class="card p-2 rounded item-card mb-3">
 
-            <div v-if="item?.name?.length >= 25" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="item?.name"
+            <div v-if="item?.name?.length >= 35" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="item?.name"
               data-bs-custom-class="custom-tooltip"
               class="d-flex flex-column justify-content-center py-3 rounded"
               style="background-color: #1c5192; overflow: hidden; white-space: nowrap;">
@@ -131,8 +131,6 @@ const startAutoScroll = () => {
       if (scrollContainer.value.scrollTop <= 0) {
         scrollDirection++; // Switch to scrolling down
       }
-
-      // console.log(scrollContainer.value.scrollTop, scrollContainer.value.clientHeight, scrollContainer.value.scrollHeight, scrollDirection)
     }
   }, scrollDelay);
 };

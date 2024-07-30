@@ -22,9 +22,9 @@ export const useDashboardStore = defineStore("dashboard", () => {
   const detail_items = ref(null);
 
   const replaceTimeUnits = (text) => {
-    if(text == "") return 'a seconds ago';
+    if (text == "") return "a seconds ago";
 
-    let newText = ''
+    let newText = "";
 
     if (text.includes("Jam") || text.includes("Menit")) {
       newText = text.replace("Jam", "hour").replace("Menit", "minute");
@@ -33,7 +33,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
     }
 
     return newText + " ago";
-  }
+  };
 
   const orderTypeDTO = (items, type) => {
     return items?.data?.map((d) => {
@@ -96,31 +96,31 @@ export const useDashboardStore = defineStore("dashboard", () => {
   const increaseQtyIfIdMatch = (data) => {
     if (!data) return;
 
-    // return Object.values(
-    //   data?.reduce((acc, item) => {
-    //     if (!acc[item.id]) {
-    //       acc[item.id] = { ...item };
-    //     } else {
-    //       acc[item.id].qty_order += item.qty_order;
-    //       acc[item.id].qty_done += item.qty_done;
-    //       acc[item.id].qty_not_done += item.qty_not_done;
-    //     }
-    //     return acc;
-    //   }, {})
-    // );
+    return Object.values(
+      data?.reduce((acc, item) => {
+        if (!acc[item.id]) {
+          acc[item.id] = { ...item };
+        } else {
+          acc[item.id].qty_order += item.qty_order;
+          acc[item.id].qty_done += item.qty_done;
+          acc[item.id].qty_not_done += item.qty_not_done;
+        }
+        return acc;
+      }, {})
+    );
 
     return data;
   };
 
   const ordersDTO = (response) => {
     let takeAway = Array.isArray(response?.Take_Away)
-      ? response?.Take_Away?.map((item) =>
-          orderTypeDTO(item, "take_away")
-        )?.flat()
+      ? response?.Take_Away?.map((item) => orderTypeDTO(item, "take_away"))
+          ?.flat()
       : null;
 
     let dineIn = Array.isArray(response?.Dine_In)
-      ? response?.Dine_In?.map((item) => orderTypeDTO(item, "dine_in"))?.flat()
+      ? response?.Dine_In?.map((item) => orderTypeDTO(item, "dine_in"))
+          ?.flat()
       : null;
 
     // let items = response?.Item?.map((item) => {
@@ -135,14 +135,17 @@ export const useDashboardStore = defineStore("dashboard", () => {
     // });
 
     const dineInFiltered = increaseQtyIfIdMatch(
-      dineIn?.filter((item) => item?.qty_not_done !== 0)
-    );
+      // dineIn?.filter((item) => item?.qty_not_done !== 0)
+      dineIn
+    )?.filter((item) => item?.qty_not_done !== 0);
+
     const takeAwayFiltered = increaseQtyIfIdMatch(
-      takeAway?.filter((item) => item?.qty_not_done !== 0)
-    );
+      takeAway
+      // takeAway?.filter((item) => item?.qty_not_done !== 0)
+    )?.filter((item) => item?.qty_not_done !== 0);
 
     let items = [];
-
+ 
     if (Array.isArray(dineInFiltered)) {
       items.push(...dineInFiltered);
     }
@@ -155,12 +158,11 @@ export const useDashboardStore = defineStore("dashboard", () => {
       dine_in: dineInFiltered,
       take_away: takeAwayFiltered,
       // items: items,
-      items: items?.sort((a, b) => a.sales_sequence - b.sales_sequence),
+      items: increaseQtyIfIdMatch(items)?.sort((a, b) => a.sales_sequence - b.sales_sequence),
       // all_count:
       //   calculateTotalLength(response?.Dine_In) +
       //   calculateTotalLength(response?.Take_Away),
-      all_count:
-        (dineInFiltered?.length ?? 0) + (takeAwayFiltered?.length ?? 0),
+      all_count: items?.length ?? 0,
       dine_in_count: dineInFiltered?.length ?? 0,
       take_away_count: takeAwayFiltered?.length ?? 0,
     };
@@ -181,24 +183,28 @@ export const useDashboardStore = defineStore("dashboard", () => {
 
   const tablesDTO = (data) => {
     return data?.map((item) => {
-      return {
-        id: item?.tblkey,
-        name: item?.tblname,
-        color: getRandomPastelColorHex(),
-        sales_date: item?.salesdate,
-        sales_sequence: item?.salesseq,
-        time: replaceTimeUnits(item?.lama),
-        items: item?.data?.map((d) => {
-          return {
-            id: d?.MenuKey,
-            name: d?.menuname,
-            menu_sequence: d?.menuseq,
-            qty_order: parseInt(d?.qty),
-            qty_done: parseInt(d?.qtyready),
-            qty_not_done: parseInt(d?.qty) - parseInt(d?.qtyready),
-          };
-        }),
-      };
+      // console.log("data?.status", item)
+      // data?.statusorder != "complete"
+      if (item?.status == '0') {
+        return {
+          id: item?.tblkey,
+          name: item?.tblname,
+          color: getRandomPastelColorHex(),
+          sales_date: item?.salesdate,
+          sales_sequence: item?.salesseq,
+          time: replaceTimeUnits(item?.lama),
+          items: item?.data?.map((d) => {
+            return {
+              id: d?.MenuKey,
+              name: d?.menuname,
+              menu_sequence: d?.menuseq,
+              qty_order: parseInt(d?.qty),
+              qty_done: parseInt(d?.qtyready),
+              qty_not_done: parseInt(d?.qty) - parseInt(d?.qtyready),
+            };
+          }),
+        };
+      }
     });
   };
 
@@ -213,11 +219,21 @@ export const useDashboardStore = defineStore("dashboard", () => {
         tables.value = [];
 
         if (Array.isArray(response?.Dine_In)) {
-          tables.value.push(...tablesDTO(response?.Dine_In));
+          tables.value.push(
+            ...tablesDTO(
+              response?.Dine_In
+              // ?.filter((item) => item.statusorder !== "complete")
+            )?.filter(item => item !== undefined)
+          );
         }
 
         if (Array.isArray(response?.Take_Away)) {
-          tables.value.push(...tablesDTO(response?.Take_Away));
+          tables.value.push(
+            ...tablesDTO(
+              response?.Take_Away
+               // ?.filter((item) => item.statusorder !== "complete")
+            )?.filter(item => item !== undefined)
+          );
         }
       })
       .catch((error) => {
@@ -296,7 +312,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
     }
   };
 
-  const updateOrderQty = async (id, payload) => {
+  const updateOrderQty = async (payload) => {
     const body = {
       detailorder: payload?.map((p) => ({
         salesdate: p?.date,
@@ -306,13 +322,17 @@ export const useDashboardStore = defineStore("dashboard", () => {
       })),
     };
 
+    console.log("updateOrderQty", payload)
+
     await updateOrder(body);
   };
 
-  const updateByTable = async (id, payload) => {
+  const updateByTable = async (payload) => {
     const body = {
       detailorder: payload?.items?.map((p) => ({
         salesdate: payload?.sales_date,
+        complete: payload?.done_count >= payload?.order_count ? "Y" : "no",
+        is_complete: payload?.done_count >= payload?.order_count ? "Y" : "no",
         salesseq: payload?.sales_sequence,
         menuseq: p?.menu_sequence,
         qtyready: p?.qty_done,

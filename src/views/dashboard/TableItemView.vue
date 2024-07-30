@@ -8,14 +8,19 @@
                     :key="index">
                     <div class="card rounded item-card mb-3 shadow-sm">
                         <div class="row g-0" style="height: 400px; overflow: auto;">
-                            <div class="col-md-2 col-lg-2 col-xl-2 col-xxl-3 col-sm-12 rounded-1" style="background-color: #1c5192" @click="gotoDetailTable(table?.id)">
-                                <h5 class="fw-bold h-100 d-flex align-items-center justify-content-center text-white text-center p-2 cursor-pointer">
-                                    {{ table?.name }}
-                                </h5>
+                            <div class="col-md-2 col-lg-2 col-xl-2 col-xxl-3 col-sm-12 rounded-1"
+                                style="background-color: #1c5192" @click="gotoDetailTable(table?.id)">
+                                <div
+                                    class="h-100 d-flex flex-column align-items-center justify-content-center text-white text-center p-2 cursor-pointer">
+                                    <p class="m-0 fs-5 fw-bold">#{{ table?.sales_sequence }}</p>
+                                    <p class="m-0 fs-5 fw-bold">{{ table?.name }}</p>
+                                    <small class="m-0">{{ table?.time }}</small>
+                                </div>
                             </div>
                             <div class="col-md-10 col-lg-10 col-xl-10 col-xxl-9 col-sm-12">
                                 <div class="table-responsive" style="height: 400px; overflow-y: auto;">
-                                    <table class="table table-sm table-striped table-hover mb-0" style="height: 400px; overflow-y: auto;">
+                                    <table class="table table-sm table-striped table-hover mb-0"
+                                        style="height: 400px; overflow-y: auto;">
                                         <thead>
                                             <tr class="sticky-header">
                                                 <th>Items</th>

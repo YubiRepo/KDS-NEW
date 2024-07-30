@@ -30,10 +30,10 @@
             </button>
             <ul class="dropdown-menu" style="z-index: 100;">
               <li>
-                <router-link class="dropdown-item" :class="{ 'active': $route.path === '/' }"  to="/">Checker</router-link>
+                <router-link class="dropdown-item" :class="{ 'active': $route.path === '/' }"  to="/">Items</router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" to="/table" :class="{ 'active': $route.path === '/table' }" >Per Table</router-link>
+                <router-link class="dropdown-item" to="/table" :class="{ 'active': $route.path === '/table' }" >Table</router-link>
               </li>
               <li>
                 <router-link class="dropdown-item" :class="{ 'active': $route.path === '/kitchen' }" to="/kitchen">Kitchen Display</router-link>

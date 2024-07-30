@@ -66,6 +66,19 @@
 
 
     <div class="my-4">
+      <div class="d-flex justify-content-end mb-2">
+        <button class="btn btn-success rounded-1" @click="setAllDone()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-square"
+            viewBox="0 0 16 16">
+            <path
+              d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5z" />
+            <path
+              d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0" />
+          </svg>
+          All Done
+        </button>
+      </div>
+
       <table class="table table-hover table-striped table-responsive" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)">
         <thead>
           <tr>
@@ -87,7 +100,8 @@
                     <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
                   </svg>
                 </span>
-                <input type="text" class="form-control" aria-label="Qty Done" v-model="t.qty_done" readonly>
+                <input type="number" class="form-control" aria-label="Qty Done" v-model="t.qty_done"
+                  @change="watchQty(i)" min="0" :max="t?.qty_order">
                 <span class="input-group-text cursor-pointer rounded-1" @click="increment(i)">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
                     viewBox="0 0 16 16">
@@ -121,7 +135,7 @@ import NavBar from "../../components/NavBar.vue"
 import { useDashboardStore } from "../../store/dashboard-store"
 import { useRouter } from "vue-router"
 import { toast } from 'vue3-toastify';
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch } from "vue"
 
 const dashboardStore = useDashboardStore()
 const router = useRouter()
@@ -170,7 +184,7 @@ const refresh = () => {
 
 const submitQty = () => {
   loadingSubmit.value = true
-  dashboardStore.updateOrderQty(item?.value?.id, item?.value?.tables)
+  dashboardStore.updateOrderQty(item?.value?.tables)
 
   toast.success("Successfully updated!")
 
@@ -193,17 +207,101 @@ const getItemDetail = async () => {
   item.value.qty_order = qtyOrder
   item.value.qty_done = qtyDone
   item.value.qty_not_done = qtyOrder - qtyDone
-
-  console.log(item.value, sameItem)
 }
+
+const countHeaderQty = () => {
+  const qtyOrder = item.value.tables.reduce((acc, t) => acc + t.qty_order, 0)
+  const qtyDone = item.value.tables.reduce((acc, t) => acc + t.qty_done, 0)
+
+  item.value.qty_order = qtyOrder
+  item.value.qty_done = qtyDone
+  item.value.qty_not_done = qtyOrder - qtyDone
+}
+
+const setAllDone = () => {
+  item.value.tables.forEach((t) => {
+    t.qty_done = t.qty_order
+    t.qty_not_done = 0
+  })
+
+  countHeaderQty()
+}
+
+const watchQty = (i) => {
+  const table = item.value.tables[i]
+  if (table.qty_done > table.qty_order) {
+    table.qty_done = table.qty_order
+  }
+
+  if (table.qty_done < 0) {
+    table.qty_done = 0
+  }
+
+  table.qty_not_done = table.qty_order - table.qty_done
+
+  countHeaderQty()
+
+
+  // let table = item.value.tables[i]
+
+  // if(table.qty_done > table.qty_order){
+  //   // item.value.qty_done = table.qty_order
+  //   // item.value.qty_not_done = 0
+  //   item.value.tables[i].qty_done = table.qty_order
+  //   item.value.tables[i].qty_not_done = 0
+  //   return
+  // } 
+
+  // if(table.qty_done < 1) {
+  //   // item.value.qty_done = 0
+  //   // item.value.qty_not_done = table.qty_order
+  //   item.value.tables[i].qty_done = 0
+  //   item.value.tables[i].qty_not_done = table.qty_order
+
+  //   return
+  // }
+
+  // item.value.tables[i].qty_done++
+  // item.value.tables[i].qty_not_done--
+
+  // if (table.qty_done == table.qty_order) {
+  //   item.value.qty_done++
+  //   item.value.qty_not_done--
+  //   item.value.tables[i].qty_done++
+  //   item.value.tables[i].qty_not_done--
+  // }
+
+  // console.log("table", item.value.tables[i])
+}
+
+// watch(item.value, () => {
+//   // if (item.value.qty_done == item.value.qty_order) setAllDone()
+//   item.value.tables.forEach((t) => {
+//     if (t.qty_done < t.qty_order) {
+//       item.value.qty_done++
+//       item.value.qty_not_done--
+
+//       t.qty_done++
+//       t.qty_not_done--
+
+//       return
+//     }
+
+//     if (t.qty_done > 0) {
+//       item.value.qty_done--
+//       item.value.qty_not_done++
+
+//       t.qty_done--
+//       t.qty_not_done++
+
+//       return
+//     }
+
+//   })
+//   // console.log("item", item.value)
+// }, { deep: true })
 
 onMounted(() => {
   getItemDetail()
 })
 </script>
-
-<style>
-.Toastify__progress-bar--success {
-  color: #188754 !important;
-}
-</style>

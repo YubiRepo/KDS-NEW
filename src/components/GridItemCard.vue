@@ -1,10 +1,10 @@
 <template>
-  <div class="card pb-1 ps-2 pl-0 m-0" style="max-width: 13rem; border-bottom: none; border-bottom-left-radius: 0; border-bottom-right-radius: 0;" >
+  <!-- <div class="card pb-1 ps-2 pl-0 m-0" style="max-width: 13rem; border-bottom: none; border-bottom-left-radius: 0; border-bottom-right-radius: 0;" >
     <h5 class="text-left p-0 m-0 fs-5">
       <span class="fw-bold">#{{ item?.sales_sequence }}</span>: 
       <span class="fs-6">{{ item?.time }}</span>
     </h5>
-  </div>
+  </div> -->
 
   <div class="card p-2 rounded item-card mb-3" @click="goToDetail(item?.id)" style="border-top-left-radius: 0 !important;">
     <div v-if="item?.name?.length >= 35" class="d-flex flex-column justify-content-center py-3 rounded cursor-pointer"
